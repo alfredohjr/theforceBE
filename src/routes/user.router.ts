@@ -1,7 +1,10 @@
 import { request, response, Router } from 'express';
 
+import AuthUser from '../middlewares/AuthUser.middlewares';
+
 import CreateUserService from '../Service/CreateUserService';
 import DeleteUserService from '../Service/DeleteUserService';
+import UpdateUserService from '../Service/UpdateUserService';
 
 const usersRouter = Router();
 
@@ -24,20 +27,43 @@ usersRouter.post('/', async (request, response) => {
     }
 })
 
+usersRouter.use(AuthUser);
+
 usersRouter.delete('/', async (request, response) => {
     try {
-        const { name, email } = request.body;
+        const { email, id } = request.body;
+
+        console.log('id',id);
 
         const deleteUser = new DeleteUserService();
 
-        deleteUser.execute({
+        await deleteUser.execute({
             email
         });
 
-        return response.status(200).json({message: 'user deleted!'})
+        return response.status(200).json({message: 'user deleted'})
 
     } catch (err) {
         return response.status(400).json({ error: err.message});
+    }
+});
+
+usersRouter.put('/', async (request, response) => {
+    try {
+        const { name, email, password, newPassword } = request.body;
+
+        const updateUser = new UpdateUserService();
+        
+        const user = await updateUser.execute({
+            name,
+            email,
+            password,
+            newPassword
+        });
+
+        return response.status(200).json({name: user?.name, email: user?.email});
+    } catch (err) {
+        return response.status(400).json({ error: err.message });
     }
 });
 

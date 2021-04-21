@@ -46,35 +46,52 @@ describe('User', () => {
         expect(response.body.email).toBe('alfredo@localhost.com.br');
         expect(response.body.password).toBeUndefined();
         expect(response.body.id).toBeUndefined();
+
+        response = await request(app).post('/user').send({
+            name: 'Alfredo Holz Junior',
+            email: 'alfredo@localhost.com.br',
+            password: '123456',
+           });
+        expect(response.body.error).toBe('Email already used!');
     })
+
+    
+    it('Alter user name', async () => {
+        const response = await request(app).put('/user').send({
+            name: 'Alfredo Holz Junior 2',
+            email: 'alfredo@localhost.com.br',
+            password: 123456
+        })
+        
+        expect(response.body.name).toBe('Alfredo Holz Junior 2');
+    });
+    
+    it('Alter user password', async () => {
+        const response = await request(app).put('/user').send({
+            newPassword: 654321,
+            password: 123456,
+            email: 'alfredo@localhost.com.br'
+        })
+
+        expect(response.status).toBe(200);
+    });
 
     it('Delete user', async () => {
         var response = await request(app).delete('/user');
-        expect(response.body.error).toBe('error for delete user!');
+        expect(response.body.error).toBe('please, send email and password.');
 
         response = await request(app).delete('/user').send({
-            token:'1',
-            email: 'alfredo@localhost.com.br'
+            email: 'alfredo@localhost.com.br',
+            password: 654321
         });
+        expect(response.body.message).toBe('user deleted');
 
-        expect(response.body.message).toBe('User deleted');
-    });
-
-    it('Alter user name', async () => {
-        const response = await request(app).put('/user').send({
-            token: '1',
-            name: 'Alfredo Holz Junior 2' 
-        })
-
-        expect(response.body.name).toBe('Alfredo Holz Junior 2');
-    });
-
-    it('Alter user password', async () => {
-        const response = await request(app).put('/user').send({
-            token: '1',
-            password: 'newPassword' 
-        })
-
-        expect(response.body.message).toBe('success');
+        response = await request(app).delete('/user').send({
+            email: 'alfredo@localhost.com.br',
+            password: 654321
+        });
+        expect(response.body.error).toBe('user not found.');
     });
 })
+
+describe('Sessions', () => {})
