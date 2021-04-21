@@ -8,9 +8,24 @@ interface Request {
 
 class DeleteUserService {
     public async execute({ email }: Request): Promise<void> {
+        
         if(!email) {
-            throw new Error('error for delete user!');
+            throw new Error('please, send email for delete.');
         }
+
+        const usersRepository = getRepository(User);
+
+        const userExists = await usersRepository.findOne({
+            where: {
+                email
+            }
+        })
+
+        if(!userExists){
+            throw new Error('user not found');
+        }
+
+        await usersRepository.remove(userExists);
     }
 }
 
