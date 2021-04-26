@@ -31,14 +31,14 @@ usersRouter.use(AuthUser);
 
 usersRouter.delete('/', async (request, response) => {
     try {
-        const { email, id } = request.body;
-
-        console.log('id',id);
+        const { email } = request.body;
+        const token = request.headers.authorization?.split(' ')[1];
 
         const deleteUser = new DeleteUserService();
 
         await deleteUser.execute({
-            email
+            email,
+            token
         });
 
         return response.status(200).json({message: 'user deleted'})
