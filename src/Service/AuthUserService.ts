@@ -1,35 +1,28 @@
-import { request } from 'express';
-import { getRepository } from 'typeorm';
-
-import User from '../models/User';
+import jwt from 'jsonwebtoken';
 
 interface Request {
-    email: string;
-    password: string;
+    token?: string;
+}
+
+interface UserInfo {
+    id: string;
 }
 
 class AuthUserService {
-    public async execute({ email, password } : Request) : Promise<void> {
+    public async execute({ token } : Request) : Promise<UserInfo> {
 
-        if(!(email || password)) {
-            throw new Error('please, send email and password.');
+        if(!token) {
+            throw new Error('please, send valid token');
         }
 
-        const usersRepository = getRepository(User);
+        const isValidToken = jwt.verify(token,'ONovoSiteSemSentido');
 
-        const userExists = await usersRepository.findOne({
-            where: {
-                email
-            }
-        });
-
-        if(!userExists) {
-            throw new Error('user not found.');
+        if(!isValidToken) {
+            throw new Error('invalid token');
         }
 
-        if(userExists.password != password) {
-            throw new Error('user or password is invalid.');
-        }
+        return isValidToken.id;
+                
 
     }
 }

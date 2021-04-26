@@ -1,4 +1,5 @@
 import { getRepository } from 'typeorm';
+import bcrypt from 'bcrypt';
 
 import User from '../models/User';
 
@@ -27,10 +28,12 @@ class UpdateUserService {
             throw new Error('user not found');
         }
 
+        const salt = await bcrypt.genSalt(8);
+
         await usersRepository.update(userExists.id,{
             name: name ? name : userExists.name,
             email,
-            password: newPassword ? newPassword : userExists.password 
+            password: newPassword ? bcrypt.hashSync(newPassword,salt) : userExists.password 
         })
 
         const user = await usersRepository.findOne({

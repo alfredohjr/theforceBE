@@ -1,4 +1,3 @@
-import { response } from 'express';
 import request from 'supertest';
 import { Connection, createConnection, getConnection } from 'typeorm'; 
 
@@ -60,16 +59,16 @@ describe('User', () => {
         const response = await request(app).put('/user').send({
             name: 'Alfredo Holz Junior 2',
             email: 'alfredo@localhost.com.br',
-            password: 123456
-        })
+            password: '123456'
+        });
         
         expect(response.body.name).toBe('Alfredo Holz Junior 2');
     });
     
     it('Alter user password', async () => {
         const response = await request(app).put('/user').send({
-            newPassword: 654321,
-            password: 123456,
+            newPassword: '654321',
+            password: '123456',
             email: 'alfredo@localhost.com.br'
         })
 
@@ -82,13 +81,13 @@ describe('User', () => {
 
         response = await request(app).delete('/user').send({
             email: 'alfredo@localhost.com.br',
-            password: 654321
+            password: '654321'
         });
         expect(response.body.message).toBe('user deleted');
 
         response = await request(app).delete('/user').send({
             email: 'alfredo@localhost.com.br',
-            password: 654321
+            password: '654321'
         });
         expect(response.body.error).toBe('user not found.');
     });

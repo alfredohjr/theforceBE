@@ -6,14 +6,15 @@ async function AuthUser(request: express.Request, response: express.Response, ne
 
     try {
 
-        const { email, password } = request.body;
+        const authorization = request.headers.authorization;
+
+        const token = authorization?.split(' ')[1]
 
         const AuthUser = new AuthUserService();
 
-        await AuthUser.execute({
-            email,
-            password
-        });
+        const userInfo = await AuthUser.execute({ token });
+
+        request.headers.userId = userInfo;
 
     } catch (err) {
         return response.status(400).json( { error: err.message } );

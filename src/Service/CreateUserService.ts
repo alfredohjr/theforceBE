@@ -1,4 +1,5 @@
 import { getRepository } from 'typeorm';
+import bcrypt from 'bcrypt';
 
 import User from '../models/User';
 
@@ -27,10 +28,13 @@ class CreateUserService {
             throw new Error('Email already used!');
         }
 
+        const salt = await bcrypt.genSalt(8);
+        const passwordHash = bcrypt.hashSync(password,salt);
+
         const user = usersRepository.create({
             name,
             email,
-            password
+            password: passwordHash
         });
 
         await usersRepository.save(user);
