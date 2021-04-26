@@ -14,8 +14,6 @@ async function AuthUser(request: express.Request, response: express.Response, ne
 
         const userInfo = await AuthUser.execute({ token });
 
-        request.headers.userId = userInfo;
-
     } catch (err) {
         return response.status(400).json( { error: err.message } );
     }
