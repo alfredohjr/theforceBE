@@ -1,20 +1,15 @@
-import { getRepository } from 'typeorm';
+import { getRepository } from "typeorm";
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 
-import User from '../models/User';
+import User from "../models/User";
 
 interface Request {
     email: string;
     password: string;
 }
 
-interface Token {
-    token: string;
-}
-
-class AuthLoginService {
-    public async execute({ email, password } : Request) : Promise<Token> {
+class IsValidUserPasswordService {
+    public async execute({email, password}: Request): Promise<void> {
 
         if(!(email || password)) {
             throw new Error('please, send email and password.');
@@ -24,8 +19,7 @@ class AuthLoginService {
 
         const userExists = await usersRepository.findOne({
             where: {
-                email,
-                deleted_at: null
+                email
             }
         });
 
@@ -38,14 +32,8 @@ class AuthLoginService {
         if(!passwordIsValid) {
             throw new Error('user or password is invalid.');
         }
-        
-        const token = jwt.sign({ id:userExists.id },'ONovoSiteSemSentido', {
-            expiresIn: 300
-        })
-
-        return { token }
 
     }
 }
 
-export default AuthLoginService;
+export default IsValidUserPasswordService;

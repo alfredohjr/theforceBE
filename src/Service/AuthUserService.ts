@@ -7,8 +7,13 @@ interface Request {
     token?: string;
 }
 
+interface Response {
+    id: string
+}
+
+
 class AuthUserService {
-    public async execute({ token } : Request) : Promise<void> {
+    public async execute({ token } : Request) : Promise<Response> {
 
         if(!token) {
             throw new Error('please, send valid token');
@@ -19,7 +24,7 @@ class AuthUserService {
         if(!isValidToken) {
             throw new Error('invalid token');
         }
-        
+
         const tokenRepository = getRepository(Token);
 
         const tokenInBlackList = await tokenRepository.findOne({
@@ -32,8 +37,10 @@ class AuthUserService {
         if(tokenInBlackList) {
             throw new Error('invalid token')
         }
-
-
+        
+        return {
+            id: (<any>isValidToken).id
+        }
     }
 }
 

@@ -44,7 +44,9 @@ class DeleteUserService {
         });
 
         await tokenRepository.save(newToken);        
-        await usersRepository.remove(userExists);
+        await usersRepository.update(userExists.id,{
+            deleted_at: new Date()
+        });
         
     }
 }

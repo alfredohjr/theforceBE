@@ -15,6 +15,9 @@ class User {
     @Column()
     password: string;
 
+    @Column()
+    deleted_at: Date;
+
     @CreateDateColumn()
     created_at: Date;
 

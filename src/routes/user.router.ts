@@ -1,6 +1,7 @@
 import { request, response, Router } from 'express';
 
 import AuthUser from '../middlewares/AuthUser.middlewares';
+import IsValidUserPassword from '../middlewares/IsValidUserPassword.middlewares';
 
 import CreateUserService from '../Service/CreateUserService';
 import DeleteUserService from '../Service/DeleteUserService';
@@ -28,6 +29,7 @@ usersRouter.post('/', async (request, response) => {
 })
 
 usersRouter.use(AuthUser);
+usersRouter.use(IsValidUserPassword);
 
 usersRouter.delete('/', async (request, response) => {
     try {
