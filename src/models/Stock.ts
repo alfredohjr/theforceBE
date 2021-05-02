@@ -22,3 +22,5 @@ class Stock {
     @UpdateDateColumn()
     updated_at: Date;
 }
+
+export default Stock;

@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-@Entity('stocks_movement')
+@Entity('stockmovement')
 class StockMovement {
 
     @PrimaryGeneratedColumn('uuid')
@@ -31,3 +31,5 @@ class StockMovement {
     @UpdateDateColumn()
     updated_at: Date;
 }
+
+export default StockMovement;
