@@ -14,6 +14,7 @@ adicionar arquivo .env
 **Deve ser modular de alguma forma**
 
 * Login.
+* Logout.
 * Cadastro.
   * Login pelo google e facebook.
 * Alteração de senha.

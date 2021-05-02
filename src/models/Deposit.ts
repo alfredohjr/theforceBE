@@ -12,9 +12,14 @@ class Deposit {
     @Column()
     user_id: string;
 
+    @Column()
+    deleted_at: Date;
+
     @CreateDateColumn()
     created_at: Date;
 
     @UpdateDateColumn()
     updated_at: Date;
 }
+
+export default Deposit;

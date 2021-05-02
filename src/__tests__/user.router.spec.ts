@@ -116,7 +116,6 @@ describe('User', () => {
             email: 'alfredo@localhost.com.br',
             password: '654321'
         });
-        console.log(response.body.error);
         expect(response.body.message).toBe('user deleted');
 
         response = await request(app).delete('/user')
