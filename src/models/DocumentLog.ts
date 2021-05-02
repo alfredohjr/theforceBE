@@ -1,31 +1,22 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-@Entity('documents')
-class Document {
+@Entity('documents_log')
+class DocumentLog {
 
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
     @Column()
-    key: string;
-
-    @Column()
     user_id: string;
 
     @Column()
-    deposit_id: string;
+    document_id: string;
 
     @Column()
-    entity_id: string;
+    code: string;
 
     @Column()
-    type: 'in' | 'out';
-
-    @Column()
-    closed_at: Date;
-
-    @Column()
-    deleted_at: Date;
+    message: string;
 
     @CreateDateColumn()
     created_at: Date;
@@ -34,4 +25,4 @@ class Document {
     updated_at: Date;
 }
 
-export default Document;
+export default DocumentLog;
