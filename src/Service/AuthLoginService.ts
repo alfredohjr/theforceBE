@@ -40,7 +40,7 @@ class AuthLoginService {
         }
         
         const token = jwt.sign({ id:userExists.id },'ONovoSiteSemSentido', {
-            expiresIn: 300
+            expiresIn: (60*60)*24
         })
 
         return { token }
