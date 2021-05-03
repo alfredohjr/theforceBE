@@ -1,3 +1,4 @@
+import { request } from "express";
 import { getRepository } from "typeorm";
 import Document from "../models/Document";
 
@@ -23,6 +24,10 @@ class CreateDocumentService {
 
         if(documentExists) {
             throw new Error('document already exists');
+        }
+
+        if(!['in','out'].includes(type)) {
+            throw new Error('please, send in or out in type of document');
         }
 
         const document = documentRepository.create({

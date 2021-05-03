@@ -26,6 +26,10 @@ class IsValidDocumentService {
         if(documentExists.deleted_at !== null) {
             throw new Error('document deleted');
         }
+
+        if(!['in','out'].includes(documentExists.type)) {
+            throw new Error('please, send in or out in type of document');
+        }
     }
 }
 
