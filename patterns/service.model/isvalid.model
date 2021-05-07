@@ -1,0 +1,31 @@
+// TODO:empty
+
+import {{ getRepository }} from 'typeorm';
+import {MODEL} from '../models/{MODEL}';
+
+interface Request {{
+    id: string;
+}};
+
+class {TYPE}{MODEL}Service {{
+    public async execute({{id}}:Request): Promise<void> {{
+        const {MODELLOWER}Repository = getRepository({MODEL});
+
+        const {MODELLOWER}Exists = await {MODELLOWER}Repository.findOne({{
+            where: {{
+                id
+            }}
+        }});
+
+        if(!{MODELLOWER}Exists) {{
+            throw new Error('{MODELLOWER} not found');
+        }}
+
+        if({MODELLOWER}Exists.deleted_at !== null) {{
+            throw new Error('{MODELLOWER} deleted');
+        }}
+
+    }}
+}}
+
+export default {TYPE}{MODEL}Service;

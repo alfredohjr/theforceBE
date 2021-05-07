@@ -1,0 +1,36 @@
+// TODO:empty
+
+import {{ getRepository }} from 'typeorm';
+import {MODEL} from '../models/{MODEL}';
+
+interface Request{{
+    name: string;
+    user_id: string;
+}};
+
+class {TYPE}{MODEL}Service {{
+    public async execute({{name, user_id}}:Request): Promise<{MODEL}>{{
+        const {MODELLOWER}Repository = getRepository({MODEL});
+
+        const {MODELLOWER}Exists = await {MODELLOWER}Repository.find({{
+             where:{{
+                 name,
+                 deleted_at: null
+             }}
+        }});
+
+        if({MODELLOWER}Exists) {{
+            throw new Error('{MODELLOWER} already exists');
+        }};
+
+        const {MODELLOWER} = {MODELLOWER}Repository.create({{
+            name,
+            user_id
+        }});
+
+        await {MODELLOWER}Repository.save({MODELLOWER});
+
+        return {MODELLOWER};
+    }}
+}}
+export default {TYPE}{MODEL}Service;

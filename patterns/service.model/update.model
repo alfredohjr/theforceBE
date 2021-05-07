@@ -1,0 +1,48 @@
+// TODO:empty
+
+import {{ getRepository }} from 'typeorm';
+import {MODEL} from '../models/{MODEL}';
+import {MODEL}Log from "../models/{MODEL}Log";
+
+interface Request {{
+    id: string;
+    user_id: string;
+    name?: string;
+}}
+
+class {TYPE}{MODEL}Service {{
+    public async execute({{id, user_id, name}}: Request): Promise<{MODEL}> {{
+        const {MODELLOWER}Repository = getRepository({MODEL});
+
+        const {MODELLOWER}Exists = await {MODELLOWER}Repository.findOne(id);
+
+        if(!{MODELLOWER}Exists) {{
+            throw new Error('{MODELLOWER} not found');
+        }}
+
+        if(!(name)) {{
+            throw new Error('please, send name for update');
+        }}
+
+        await {MODELLOWER}Repository.update({MODELLOWER}Exists.id,{{
+            name: name ? name : {MODELLOWER}Exists.name
+        }});
+
+        const {MODELLOWER}LogRepository = getRepository({MODEL}Log);
+
+        const {MODELLOWER}Log = {MODELLOWER}LogRepository.create({{
+            user_id: user_id,
+            {MODELLOWER}_id: id,
+            code: `update`,
+            message: `{{service:'update',name: {{from:'${{name}}',to:'${{{MODELLOWER}Exists.name}}'}}`
+        }});
+
+        await {MODELLOWER}LogRepository.save({MODELLOWER}Log);
+
+        const {MODELLOWER} = await {MODELLOWER}Repository.findOne(id);
+
+        return {MODELLOWER} ? {MODELLOWER} : {MODELLOWER}Exists;
+    }}
+}}
+
+export default {TYPE}{MODEL}Service;
