@@ -7,6 +7,9 @@ class Token {
     id: string;
 
     @Column()
+    user_id: string;
+
+    @Column()
     hash: string;
 
     @Column()
