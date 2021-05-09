@@ -8,6 +8,9 @@ class Stock {
     id: string;
 
     @Column()
+    user_id: string;
+
+    @Column()
     deposit_id: string;
 
     @Column()
@@ -15,6 +18,9 @@ class Stock {
 
     @Column()
     value: number;
+
+    @Column()
+    deleted_at: Date;
 
     @CreateDateColumn()
     created_at: Date;
