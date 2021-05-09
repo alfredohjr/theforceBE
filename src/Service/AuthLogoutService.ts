@@ -5,10 +5,11 @@ import Token from '../models/Token';
 
 interface Request {
     token?: string;
+    user_id: string;
 }
 
 class AuthLogoutService {
-    public async execute({ token }: Request): Promise<void> {
+    public async execute({ token, user_id }: Request): Promise<void> {
 
         if(!token) {
             throw new Error('please, send token')
@@ -21,9 +22,14 @@ class AuthLogoutService {
         }
         
         const tokenRepository = getRepository(Token);
+
+        await tokenRepository.update({user_id},{
+            isvalid: false
+        });
         
         const newToken = tokenRepository.create({
             hash: token,
+            user_id,
             isvalid: false
         });
 

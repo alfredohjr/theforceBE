@@ -10,11 +10,13 @@ logoutRouter.post('/', async (request, response) => {
 
     try {
         const token = request.headers.authorization?.split(' ')[1];
+        const user_id = request.user.id;
 
         const AuthLogout = new AuthLogoutService();
 
         await AuthLogout.execute({
-            token
+            token,
+            user_id
         });
 
         return response.status(200).json({message: 'success'});

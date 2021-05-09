@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 import User from '../models/User';
+import Token from '../models/Token';
 
 interface Request {
     email: string;
@@ -21,6 +22,7 @@ class AuthLoginService {
         }
 
         const usersRepository = getRepository(User);
+        const tokenRepository = getRepository(Token);
 
         const userExists = await usersRepository.findOne({
             where: {
@@ -42,6 +44,21 @@ class AuthLoginService {
         const token = jwt.sign({ id:userExists.id },'ONovoSiteSemSentido', {
             expiresIn: (60*60)*24
         })
+
+        await tokenRepository.update(
+            { user_id:userExists.id },
+            {
+                isvalid: false
+            }
+        );
+
+        const newToken = tokenRepository.create({
+            user_id: userExists.id,
+            hash: token,
+            isvalid: true
+        });
+
+        await tokenRepository.save(newToken);
 
         return { token }
 
