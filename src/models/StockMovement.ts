@@ -25,6 +25,9 @@ class StockMovement {
     @Column()
     type: 'in' | 'out';
 
+    @Column()
+    deleted_at: Date;
+
     @CreateDateColumn()
     created_at: Date;
 
