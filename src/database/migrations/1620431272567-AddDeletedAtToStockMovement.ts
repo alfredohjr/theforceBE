@@ -8,7 +8,7 @@ export class AddDeletedAtToStockMovement1620431272567 implements MigrationInterf
             new TableColumn({
                 name: 'deleted_at',
                 type: 'timestamp',
-                isNullable: false,
+                isNullable: true,
                 default: null
             }));
     }
