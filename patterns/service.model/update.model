@@ -2,7 +2,7 @@
 
 import {{ getRepository }} from 'typeorm';
 import {MODEL} from '../models/{MODEL}';
-import {MODEL}Log from "../models/{MODEL}Log";
+import {MODEL}Log from '../models/{MODEL}Log';
 
 interface Request {{
     id: string;
@@ -33,8 +33,8 @@ class {TYPE}{MODEL}Service {{
         const {MODELLOWER}Log = {MODELLOWER}LogRepository.create({{
             user_id: user_id,
             {MODELLOWER}_id: id,
-            code: `update`,
-            message: `{{service:'update',name: {{from:'${{name}}',to:'${{{MODELLOWER}Exists.name}}'}}`
+            code: `UPDATE`,
+            message: `{{service:'update',name: {{from:'${{name}}',to:'${{{MODELLOWER}Exists.name}}'}}}}`
         }});
 
         await {MODELLOWER}LogRepository.save({MODELLOWER}Log);
