@@ -1,6 +1,5 @@
 import { request, response, Router } from 'express';
 
-import AuthUser from '../middlewares/AuthUser.middlewares'; 
 import IsActiveProduct from '../middlewares/IsActiveProduct.middlewares';
 
 import CreateProductService from '../Service/CreateProductService';
@@ -8,8 +7,6 @@ import DeleteProductService from '../Service/DeleteProductService';
 import UpdateProductService from '../Service/UpdateProductService';
 
 const productRouter = Router();
-
-productRouter.use(AuthUser);
 
 productRouter.post('/', async (request, response) => {
     try {

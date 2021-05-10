@@ -1,11 +1,9 @@
 import { Router } from 'express';
-import AuthUser from '../middlewares/AuthUser.middlewares';
 import IsValidEntity from '../middlewares/IsValidEntity.middlewares';
 import CreateEntityService from '../Service/CreateEntityService';
 
 const entityRouter = Router();
 
-entityRouter.use(AuthUser);
 entityRouter.use(IsValidEntity);
 
 entityRouter.post('/', async(request, response) => {

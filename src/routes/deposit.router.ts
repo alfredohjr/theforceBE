@@ -1,6 +1,5 @@
 import { request, response, Router } from 'express';
 
-import AuthUser from '../middlewares/AuthUser.middlewares'; 
 import CreateDepositService from '../Service/CreateDepositService';
 import UpdateDepositService from '../Service/UpdateDepositService';
 import DeleteDepositService from '../Service/DeleteDepositService';
@@ -8,8 +7,6 @@ import RegisterDeposit from '../middlewares/RegisterDeposit.middlewares';
 import IsValidDeposit from '../middlewares/IsValidDeposit.middlewares';
 
 const depositRouter = Router();
-
-depositRouter.use(AuthUser);
 
 depositRouter.post('/', async (request, response) => {
     try {

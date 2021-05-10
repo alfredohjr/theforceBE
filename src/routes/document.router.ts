@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import AuthUser from '../middlewares/AuthUser.middlewares';
 import CloseDocumentService from '../Service/CloseDocumentService';
 import CreateDocumentService from '../Service/CreateDocumentService';
 import IsValidDepositService from '../Service/IsValidDepositService';
@@ -7,7 +6,6 @@ import documentProductRouter from './documentProduct.router';
 
 const documentRouter = Router();
 
-documentRouter.use(AuthUser);
 documentRouter.use('/product',documentProductRouter);
 
 documentRouter.post('/', async(request, response) => {
