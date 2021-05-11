@@ -1,8 +1,8 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-@Entity('users')
-class User {
-    
+@Entity('permissions')
+class Permission {
+
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -10,13 +10,10 @@ class User {
     name: string;
 
     @Column()
-    email: string;
+    method: string;
 
     @Column()
-    password: string;
-
-    @Column()
-    ismaster: boolean;
+    url: string;
 
     @Column()
     deleted_at: Date;
@@ -26,7 +23,6 @@ class User {
 
     @UpdateDateColumn()
     updated_at: Date;
-
 }
 
-export default User;
+export default Permission;
