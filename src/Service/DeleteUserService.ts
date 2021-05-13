@@ -38,12 +38,15 @@ class DeleteUserService {
             throw new Error('invalid token')
         }
 
-        const newToken = tokenRepository.create({
-            hash: token,
-            isvalid: false
-        });
+        await tokenRepository.update(
+            {
+                user_id: userExists.id
+            },
+            {
+                isvalid: false
+            }
+        );
 
-        await tokenRepository.save(newToken);        
         await usersRepository.update(userExists.id,{
             deleted_at: new Date()
         });
