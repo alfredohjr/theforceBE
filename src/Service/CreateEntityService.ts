@@ -21,7 +21,7 @@ class CreateEntityService {
             throw new Error('please, send new name for this entity');
         }
 
-        if(['client','provider'].includes(type)) {
+        if(!['client','provider'].includes(type)) {
             throw new Error('please, send client or provider for type of entity');
         }
 
