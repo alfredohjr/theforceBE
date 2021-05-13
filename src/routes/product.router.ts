@@ -4,9 +4,23 @@ import IsActiveProduct from '../middlewares/IsActiveProduct.middlewares';
 
 import CreateProductService from '../Service/CreateProductService';
 import DeleteProductService from '../Service/DeleteProductService';
+import GetProductService from '../Service/GetProductService';
 import UpdateProductService from '../Service/UpdateProductService';
 
 const productRouter = Router();
+
+productRouter.get('/', async (request, response) => {
+    try {
+        const {id} = request.body;
+        const getProducts = new GetProductService();
+
+        const products = await getProducts.execute({id});
+
+        return response.status(200).json(products);
+    } catch (err) {
+        return response.status(400).json({error: err.message});
+    }
+});
 
 productRouter.post('/', async (request, response) => {
     try {
