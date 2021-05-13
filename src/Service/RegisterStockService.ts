@@ -2,6 +2,7 @@ import { getRepository } from "typeorm";
 import Stock from "../models/Stock";
 
 interface Request {
+    user_id: string;
     deposit_id: string;
     product_id: string;
     type: 'in' | 'out';
@@ -9,7 +10,7 @@ interface Request {
 }
 
 class RegisterStockService {
-    public async execute({deposit_id, product_id, value, type}: Request): Promise<Stock | void> {
+    public async execute({user_id, deposit_id, product_id, value, type}: Request): Promise<Stock | void> {
         const stockRepository = getRepository(Stock);
 
         const stockExists = await stockRepository.findOne({
@@ -45,6 +46,7 @@ class RegisterStockService {
             const stock = stockRepository.create({
                 deposit_id,
                 product_id,
+                user_id,
                 value
             });
 

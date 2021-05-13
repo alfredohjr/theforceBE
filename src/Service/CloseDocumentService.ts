@@ -62,7 +62,8 @@ class CloseDocumentService {
                 deposit_id: document.deposit_id,
                 product_id: p.product_id,
                 type: document.type,
-                value: p.value
+                value: p.value,
+                user_id
             });
         }
         
