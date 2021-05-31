@@ -6,6 +6,7 @@ class Service:
         self.delete = self.getModel('delete')
         self.isvalid = self.getModel('isvalid')
         self.update = self.getModel('update')
+        self.get = self.getModel('get')
         self.tmpPath = 'tmp'
 
     def readModel(self,fullFilePath=None):
@@ -34,3 +35,6 @@ class Service:
 
         text = self.update.format(MODEL=model,MODELLOWER=model.lower(),TYPE='Update')
         self.write2file('services/Update' + model + 'Service.ts',text)
+
+        text = self.get.format(MODEL=model,MODELLOWER=model.lower(),TYPE='Get')
+        self.write2file('services/Get' + model + 'Service.ts',text)

@@ -1,0 +1,20 @@
+// TODO:empty
+
+import {{ getRepository }} from 'typeorm';
+import {MODEL} from '../models/{MODEL}';
+
+class {TYPE}{MODEL}Service {{
+    public async execute(): Promise<{MODEL}[]> {{
+        const {MODELLOWER}Repository = getRepository({MODEL});
+
+        const {MODELLOWER}s = await {MODELLOWER}Repository.find({{
+            where: {{
+                deleted_at: null
+            }}
+        }});
+
+        return {MODELLOWER}s;
+    }}
+}}
+
+export default {TYPE}{MODEL}Service;
