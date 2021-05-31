@@ -56,7 +56,7 @@ async function PermissionUser(request: express.Request, response: express.Respon
         }
 
     } catch (err) {
-        return response.status(400).json( { error: err.message } );
+        return response.status(401).json( { error: err.message } );
     }
     
     next();
