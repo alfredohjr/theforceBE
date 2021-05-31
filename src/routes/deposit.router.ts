@@ -3,6 +3,7 @@ import { request, response, Router } from 'express';
 import CreateDepositService from '../Service/CreateDepositService';
 import UpdateDepositService from '../Service/UpdateDepositService';
 import DeleteDepositService from '../Service/DeleteDepositService';
+import GetDepositService from '../Service/GetDepositService';
 import RegisterDeposit from '../middlewares/RegisterDeposit.middlewares';
 import IsValidDeposit from '../middlewares/IsValidDeposit.middlewares';
 
@@ -18,6 +19,18 @@ depositRouter.post('/', async (request, response) => {
         const deposit = await createDeposit.execute({ name, user_id });
 
         return response.status(200).json(deposit);
+    } catch (err) {
+        return response.status(400).json({error: err.message});
+    }
+});
+
+depositRouter.get('/', async (request, response) => {
+    try {
+        
+        const getDeposit = new GetDepositService();
+        const deposits = await getDeposit.execute();
+
+        return response.status(200).json(deposits);
     } catch (err) {
         return response.status(400).json({error: err.message});
     }
