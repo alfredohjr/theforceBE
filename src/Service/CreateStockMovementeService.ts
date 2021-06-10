@@ -8,6 +8,7 @@ interface Request {
     product_id:string;
     type:'in' | 'out';
     value:number;
+    amount: number;
 }
 
 class CreateStockMovementeService {
@@ -17,7 +18,8 @@ class CreateStockMovementeService {
         document_id, 
         product_id, 
         type, 
-        value}: Request): Promise<void> {
+        value,
+        amount}: Request): Promise<void> {
 
         const stockMovementRepository = getRepository(StockMovement);
 
@@ -35,6 +37,7 @@ class CreateStockMovementeService {
 
         const stockMov = stockMovementRepository.create({
             value,
+            amount,
             type, 
             deposit_id, 
             product_id, 
