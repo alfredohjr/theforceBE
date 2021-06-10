@@ -6,8 +6,11 @@ import CreateProductService from '../Service/CreateProductService';
 import DeleteProductService from '../Service/DeleteProductService';
 import GetProductService from '../Service/GetProductService';
 import UpdateProductService from '../Service/UpdateProductService';
+import priceRouter from './productPrice.router';
 
 const productRouter = Router();
+
+productRouter.use('/price',priceRouter);
 
 productRouter.get('/', async (request, response) => {
     try {
