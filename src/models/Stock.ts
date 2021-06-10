@@ -20,6 +20,9 @@ class Stock {
     value: number;
 
     @Column()
+    amount: number;
+
+    @Column()
     deleted_at: Date;
 
     @CreateDateColumn()

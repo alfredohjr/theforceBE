@@ -31,7 +31,7 @@ export class CreateDocumentProduct1619904001746 implements MigrationInterface {
                     },
                     {
                         name: 'value',
-                        type: 'integer',
+                        type: 'float',
                         isNullable: false
                     },
                     {

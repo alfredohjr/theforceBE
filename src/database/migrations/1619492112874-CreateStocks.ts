@@ -16,6 +16,11 @@ export class CreateStocks1619492112874 implements MigrationInterface {
                     },
                     {
                         name: 'value',
+                        type: 'float',
+                        default: 0
+                    },
+                    {
+                        name: 'amount',
                         type: 'integer',
                         default: 0
                     },

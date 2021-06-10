@@ -23,6 +23,9 @@ class StockMovement {
     value: number;
 
     @Column()
+    amount: number;
+
+    @Column()
     type: 'in' | 'out';
 
     @Column()

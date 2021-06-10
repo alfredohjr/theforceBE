@@ -7,10 +7,11 @@ interface Request {
     product_id: string;
     type: 'in' | 'out';
     value: number;
+    amount: number;
 }
 
 class RegisterStockService {
-    public async execute({user_id, deposit_id, product_id, value, type}: Request): Promise<Stock | void> {
+    public async execute({user_id, deposit_id, product_id, value, type, amount}: Request): Promise<Stock | void> {
         const stockRepository = getRepository(Stock);
 
         const stockExists = await stockRepository.findOne({
@@ -20,18 +21,18 @@ class RegisterStockService {
             }
         });
 
-        var newValue = 0;
+        var newAmount = 0;
         if(type === 'out') {
-            newValue = value * -1;
+            newAmount = amount * -1;
         } else if(type === 'in') {
-            newValue = value * 1;
+            newAmount = amount * 1;
         } else {
             throw new Error('please, send in or out in type of movement');
         }
 
         if(stockExists) {
             await stockRepository.update(stockExists.id, {
-                value: stockExists.value + newValue
+                amount: stockExists.amount + newAmount
             });
 
             const stock = await stockRepository.findOne({
@@ -47,7 +48,8 @@ class RegisterStockService {
                 deposit_id,
                 product_id,
                 user_id,
-                value
+                value,
+                amount: newAmount
             });
 
             await stockRepository.save(stock);
