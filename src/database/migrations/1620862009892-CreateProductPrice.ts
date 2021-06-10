@@ -42,7 +42,7 @@ export class CreateProductPrice1620862009892 implements MigrationInterface {
                     },
                     {
                         name: 'price',
-                        type: 'integer',
+                        type: 'float',
                     },
                     {
                         name: 'deleted_at',
