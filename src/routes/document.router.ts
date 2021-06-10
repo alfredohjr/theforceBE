@@ -1,12 +1,26 @@
 import { Router } from 'express';
 import CloseDocumentService from '../Service/CloseDocumentService';
 import CreateDocumentService from '../Service/CreateDocumentService';
+import DeleteDocumentService from '../Service/DeleteDocumentService';
+import GetDocumentService from '../Service/GetDocumentService';
 import IsValidDepositService from '../Service/IsValidDepositService';
 import documentProductRouter from './documentProduct.router';
 
 const documentRouter = Router();
 
 documentRouter.use('/product',documentProductRouter);
+
+documentRouter.get('/', async (request, response) => {
+    try {
+        
+        const getDocument = new GetDocumentService();
+        const documents = await getDocument.execute();
+
+        return response.status(200).json(documents);
+    } catch (err) {
+        return response.status(400).json({error: err.message});
+    }
+});
 
 documentRouter.post('/', async(request, response) => {
     try {
@@ -42,7 +56,14 @@ documentRouter.put('/', async(request, response) => {
 
 documentRouter.delete('/', async(request, response) => {
     try {
-        return response.status(500).json({ message: `${request.method} is empty`});
+
+        const { id } = request.body;
+        const user_id = request.user.id;
+
+        const document = new DeleteDocumentService();
+        await document.execute({id,user_id});
+
+        return response.status(200).json({ message: `document ${document_id} is deleted`});
     } catch (err) {
         response.status(400).json({ error: err.message})
     }
