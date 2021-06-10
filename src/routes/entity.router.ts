@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import IsValidEntity from '../middlewares/IsValidEntity.middlewares';
 import CreateEntityService from '../Service/CreateEntityService';
+import DeleteEntityService from '../Service/DeleteEntityService';
+import GetEntityService from '../Service/GetEntityService';
 
 const entityRouter = Router();
-
-entityRouter.use(IsValidEntity);
 
 entityRouter.post('/', async(request, response) => {
     try {
@@ -26,6 +26,20 @@ entityRouter.post('/', async(request, response) => {
     }
 });
 
+entityRouter.get('/', async (request, response) => {
+    try {
+        
+        const getEntity = new GetEntityService();
+        const entities = await getEntity.execute();
+
+        return response.status(200).json(entities);
+    } catch (err) {
+        return response.status(400).json({error: err.message});
+    }
+});
+
+entityRouter.use(IsValidEntity);
+
 entityRouter.put('/', async(request, response) => {
     try {
         return response.status(500).json({ message: `${request.method} is empty`});
@@ -36,7 +50,13 @@ entityRouter.put('/', async(request, response) => {
 
 entityRouter.delete('/', async(request, response) => {
     try {
-        return response.status(500).json({ message: `${request.method} is empty`});
+        const {id} = request.body;
+        const user_id = request.user.id;
+
+        const deleteEntity = new DeleteEntityService();
+        await deleteEntity.execute({id,user_id});
+
+        return response.status(500).json({ message: `Entity deleted`});
     } catch (err) {
         response.status(400).json({ error: err.message})
     }
