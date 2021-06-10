@@ -1,9 +1,23 @@
 import { request, Router } from 'express';
 import CreateDocumentProductService from '../Service/CreateDocumentProductService';
+import GetDocumentProductService from '../Service/GetDocumentProductService';
 import IsValidDocumentService from '../Service/IsValidDocumentService';
 import IsValidProductService from '../Service/IsValidProductService';
 
 const documentProductRouter = Router();
+
+documentProductRouter.get('/:document_id', async(request, response) => {
+    try {
+        const { document_id } = request.params;
+
+        const documentProduct = new GetDocumentProductService();
+        const documentProducts = await documentProduct.execute(document_id);
+
+        return response.status(200).json(documentProducts);
+    } catch (err) {
+        return response.status(400).json({ error: err.message });
+    }
+});
 
 documentProductRouter.post('/', async(request, response) => {
     try {
