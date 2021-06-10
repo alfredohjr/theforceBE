@@ -24,7 +24,7 @@ class CreateProductPriceService {
         }:Request): Promise<ProductPrice>{
         const productpriceRepository = getRepository(ProductPrice);
 
-        if(!isAfter(finished_at,started_at)){
+        if(isAfter(finished_at,started_at)){
             throw new Error('start is after finished');
         }
 
