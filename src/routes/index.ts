@@ -1,4 +1,5 @@
 import Router from 'express';
+import cors from 'cors';
 
 import PermissionUser from '../middlewares/Permission.middlewares';
 
@@ -12,6 +13,8 @@ import documentRouter from './document.router';
 import AuthUser from '../middlewares/AuthUser.middlewares';
 
 const routes = Router();
+
+routes.use(cors());
 
 routes.use('/user', usersRouter);
 routes.use('/login', loginRouter);
