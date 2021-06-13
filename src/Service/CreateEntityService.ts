@@ -1,5 +1,6 @@
 import { getRepository } from "typeorm";
 import EntityModel from "../models/Entity";
+import SendEmailService from "./SendEmailService";
 
 interface Request {
     name: string;
@@ -10,6 +11,7 @@ interface Request {
 class CreateEntityService {
     public async execute({name, type, user_id}:Request): Promise<EntityModel> {
         const entityRepository = getRepository(EntityModel);
+        const sendEmail = new SendEmailService();
 
         const entityExists = await entityRepository.findOne({
             where: {
@@ -32,6 +34,15 @@ class CreateEntityService {
         });
 
         await entityRepository.save(entity);
+
+        await sendEmail.execute({
+            to:'alfredo@test2.com.br'
+            , subject:'Oi'
+            , template: 'newEntity'
+            , context: {
+                name
+            }
+        });
 
         return entity;
     }
