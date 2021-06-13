@@ -14,6 +14,8 @@ async function AuthUser(request: express.Request, response: express.Response, ne
 
         const userInfo = await AuthUser.execute({ token });
 
+        console.log(new Date(), request.method,request.url);
+
         request.user = {
             id: userInfo.id
         }
