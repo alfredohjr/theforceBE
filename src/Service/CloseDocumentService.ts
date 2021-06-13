@@ -1,3 +1,5 @@
+// TODO: add documentlog service
+
 import { getRepository } from "typeorm";
 import Document from "../models/Document";
 import DocumentProduct from "../models/DocumentProduct";
@@ -55,7 +57,8 @@ class CloseDocumentService {
                 document_id: p.document_id,
                 product_id: p.product_id,
                 type: document.type,
-                value: p.value
+                value: p.value,
+                amount: p.amount
             });
 
             await registerStock.execute({
@@ -63,6 +66,7 @@ class CloseDocumentService {
                 product_id: p.product_id,
                 type: document.type,
                 value: p.value,
+                amount: p.amount,
                 user_id
             });
         }
