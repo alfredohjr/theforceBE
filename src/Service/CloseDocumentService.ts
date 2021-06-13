@@ -1,5 +1,3 @@
-// TODO: add documentlog service
-
 import { getRepository } from "typeorm";
 import Document from "../models/Document";
 import DocumentProduct from "../models/DocumentProduct";
