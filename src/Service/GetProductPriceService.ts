@@ -1,5 +1,3 @@
-// TODO: falta arrumar os preços por level e isoffer... 
-
 import { getConnection, getRepository, LessThanOrEqual, MoreThanOrEqual } from "typeorm";
 import Product from "../models/Product";
 import ProductPrice from "../models/ProductPrice";

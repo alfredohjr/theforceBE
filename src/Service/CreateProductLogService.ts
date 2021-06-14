@@ -1,5 +1,3 @@
-// TODO:empty
-
 import { getRepository } from 'typeorm';
 import ProductLog from '../models/ProductLog';
 
