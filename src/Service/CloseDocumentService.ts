@@ -1,6 +1,7 @@
 import { getRepository } from "typeorm";
 import Document from "../models/Document";
 import DocumentProduct from "../models/DocumentProduct";
+import CreateDocumentLogService from "./CreateDocumentLogService";
 import CreateStockMovementeService from "./CreateStockMovementeService";
 import IsValidDepositService from "./IsValidDepositService";
 import IsValidDocumentService from "./IsValidDocumentService";
@@ -72,6 +73,14 @@ class CloseDocumentService {
 
         await documentRepository.update(id,{
             closed_at: new Date()
+        });
+
+        const documentLog = new CreateDocumentLogService();
+        await documentLog.execute({
+            code: 'CLOSE',
+            document_id: id,
+            message:`{close:'${id}'}`,
+            user_id,    
         });
     }
 }
