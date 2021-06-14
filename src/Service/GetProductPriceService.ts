@@ -1,6 +1,7 @@
 // TODO: falta arrumar os preços por level e isoffer... 
 
 import { getConnection, getRepository, LessThanOrEqual, MoreThanOrEqual } from "typeorm";
+import Product from "../models/Product";
 import ProductPrice from "../models/ProductPrice";
 
 interface Request {
@@ -43,12 +44,18 @@ class GetProductPriceService {
             .groupBy('maxprices.product_id')
             .addGroupBy('maxprices.level')
             .addGroupBy('maxprices.isoffer');
+        
+        const products = getRepository(Product)
+            .createQueryBuilder('products')
+            .select('products.id')
+            .where('deleted_at is null')
 
         const prices = await getConnection()
             .createQueryBuilder()
             .select('prices')
             .from(ProductPrice,'prices')
             .where('(prices.product_id, prices.level, prices.isoffer, prices.created_at) in (' + maxPrices.getQuery() + ')')
+            .andWhere('prices.product_id in (' + products.getQuery() + ')')
             .setParameters(maxPrices.getParameters())
             .getMany();
 
