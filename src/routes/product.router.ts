@@ -1,10 +1,9 @@
 import { request, response, Router } from 'express';
 
-import IsActiveProduct from '../middlewares/IsActiveProduct.middlewares';
-
 import CreateProductService from '../Service/CreateProductService';
 import DeleteProductService from '../Service/DeleteProductService';
 import GetProductService from '../Service/GetProductService';
+import IsValidProductService from '../Service/IsValidProductService';
 import UpdateProductService from '../Service/UpdateProductService';
 import priceRouter from './productPrice.router';
 
@@ -41,12 +40,13 @@ productRouter.post('/', async (request, response) => {
     }
 });
 
-productRouter.use(IsActiveProduct);
-
 productRouter.put('/', async (request, response) => {
     try {
         const { id, name } = request.body;
         const user_id = request.user.id;
+
+        const isValidProduct = new IsValidProductService();
+        await isValidProduct.execute({id});
 
         const productRepository = new UpdateProductService();
 
@@ -67,6 +67,9 @@ productRouter.delete('/', async (request, response) => {
     try {
         const { id } = request.body;
         const user_id = request.user.id;
+
+        const isValidProduct = new IsValidProductService();
+        await isValidProduct.execute({id});
 
         const productService = new DeleteProductService();
 

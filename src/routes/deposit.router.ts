@@ -4,8 +4,7 @@ import CreateDepositService from '../Service/CreateDepositService';
 import UpdateDepositService from '../Service/UpdateDepositService';
 import DeleteDepositService from '../Service/DeleteDepositService';
 import GetDepositService from '../Service/GetDepositService';
-import RegisterDeposit from '../middlewares/RegisterDeposit.middlewares';
-import IsValidDeposit from '../middlewares/IsValidDeposit.middlewares';
+import IsValidDepositService from '../Service/IsValidDepositService';
 
 const depositRouter = Router();
 
@@ -36,14 +35,14 @@ depositRouter.get('/', async (request, response) => {
     }
 });
 
-depositRouter.use(IsValidDeposit);
-depositRouter.use(RegisterDeposit);
-
 depositRouter.put('/', async (request, response) => {
     try {
         
         const { id, name } = request.body;
         const user_id = request.user.id;
+
+        const isValidDeposit = new IsValidDepositService();
+        await isValidDeposit.execute({id});
 
         const updateDeposit = new UpdateDepositService();
         const deposit = await updateDeposit.execute({ id, name, user_id });
@@ -59,6 +58,9 @@ depositRouter.delete('/', async (request, response) => {
 
         const { id } = request.body;
         const user_id = request.user.id;
+
+        const isValidDeposit = new IsValidDepositService();
+        await isValidDeposit.execute({id});
 
         const deleteDeposit = new DeleteDepositService();
         await deleteDeposit.execute({ id, user_id });
