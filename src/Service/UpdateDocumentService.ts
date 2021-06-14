@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 import Document from '../models/Document';
-import DocumentLog from "../models/DocumentLog";
+import CreateDocumentLogService from './CreateDocumentLogService';
 
 interface Request {
     id: string;
@@ -22,16 +22,13 @@ class UpdateDocumentService {
             key: key ? key : documentExists.key
         });
 
-        const documentLogRepository = getRepository(DocumentLog);
-
-        const documentLog = documentLogRepository.create({
+        const documentLog = new CreateDocumentLogService();
+        await documentLog.execute({
             user_id: user_id,
             document_id: id,
             code: `UPDATE`,
             message: `{service:'update',key: {from:'${documentExists.key}',to:'${key}'}`
         });
-
-        await documentLogRepository.save(documentLog);
 
         const document = await documentRepository.findOne(id);
 

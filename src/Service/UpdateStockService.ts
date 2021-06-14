@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 import Stock from '../models/Stock';
-import StockLog from '../models/StockLog';
+import CreateStockLogService from './CreateStockLogService';
 
 interface Request {
     id: string;
@@ -22,16 +22,13 @@ class UpdateStockService {
             value: value ? value : stockExists.value
         });
 
-        const stockLogRepository = getRepository(StockLog);
-
-        const stockLog = stockLogRepository.create({
+        const stockLog = new CreateStockLogService();
+        await stockLog.execute({
             user_id: user_id,
             stock_id: id,
             code: `update`,
             message: `{service:'update',value: {from:'${stockExists.value}',to:'${value}'}`
         });
-
-        await stockLogRepository.save(stockLog);
 
         const stock = await stockRepository.findOne(id);
 

@@ -1,5 +1,6 @@
 import { getRepository } from "typeorm";
 import Deposit from "../models/Deposit";
+import CreateDepositLogService from "./CreateDepositLogService";
 
 interface Request {
     id: string;
@@ -32,6 +33,14 @@ class UpdateDepositService {
         });
 
         const deposit = await depositRepository.findOne(id);
+
+        const depositLog = new CreateDepositLogService();
+        await depositLog.execute({
+            deposit_id: depositExists.id,
+            code: 'UPDATE',
+            message: `{service:'UpdateDepositService',to:'${depositExists.name}',from:'${name}'}`,
+            user_id
+        });
 
         return deposit ? deposit : depositExists;
     }

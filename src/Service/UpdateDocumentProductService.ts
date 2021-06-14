@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 import DocumentProduct from '../models/DocumentProduct';
-import DocumentLog from "../models/DocumentLog";
+import CreateDocumentLogService from './CreateDocumentLogService';
 
 interface Request {
     id: string;
@@ -24,16 +24,14 @@ class UpdateDocumentProductService {
             amount: amount ? amount : documentproductExists.amount
         });
 
-        const documentLogRepository = getRepository(DocumentLog);
-
-        const documentLog = documentLogRepository.create({
+    
+        const documentLog = new CreateDocumentLogService()
+        await documentLog.execute({
             user_id: user_id,
             document_id: documentproductExists.document_id,
             code: `UPDATE DOCUMENTPRODUCT`,
             message: `{service:'update',value: {from:'${documentproductExists.value}',to:'${value}'}, amount: {from: ${documentproductExists},to: ${amount}}}`
         });
-
-        await documentLogRepository.save(documentLog);
 
         const documentproduct = await documentproductRepository.findOne(id);
 

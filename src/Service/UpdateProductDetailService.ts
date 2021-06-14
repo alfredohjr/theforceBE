@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 import ProductDetail from '../models/ProductDetail';
-import ProductLog from '../models/ProductLog';
+import CreateProductLogService from './CreateProductLogService';
 
 interface Request {
     id: string;
@@ -26,16 +26,13 @@ class UpdateProductDetailService {
             text: text ? text : productdetailExists.text
         });
 
-        const productLogRepository = getRepository(ProductLog);
-
-        const productdetailLog = productLogRepository.create({
+        const productLog = new CreateProductLogService();
+        await productLog.execute({
             user_id: user_id,
             product_id: id,
             code: `UPDATE`,
             message: `{service:'update',name: {from:'${text}',to:'${productdetailExists.text}'}}`
         });
-
-        await productLogRepository.save(productdetailLog);
 
         const productdetail = await productdetailRepository.findOne(id);
 

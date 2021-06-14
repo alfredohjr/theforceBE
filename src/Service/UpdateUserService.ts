@@ -2,6 +2,7 @@ import { getRepository } from 'typeorm';
 import bcrypt from 'bcrypt';
 
 import User from '../models/User';
+import CreateUserLogService from './CreateUserLogService';
 
 interface Request {
     name?: string;
@@ -34,6 +35,13 @@ class UpdateUserService {
             name: name ? name : userExists.name,
             email,
             password: newPassword ? bcrypt.hashSync(newPassword,salt) : userExists.password 
+        })
+
+        const userLog = new CreateUserLogService();
+        await userLog.execute({
+            user_id: userExists.id,
+            code: 'UPDATE',
+            message: `{service:'UpdateUserService'}`
         })
 
         const user = await usersRepository.findOne({

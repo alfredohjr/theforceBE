@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 import Entity from '../models/Entity';
-import EntityLog from '../models/EntityLog';
+import CreateEntityLogService from './CreateEntityLogService';
 
 interface Request {
     id: string;
@@ -26,16 +26,13 @@ class UpdateEntityService {
             name: name ? name : entityExists.name
         });
 
-        const entityLogRepository = getRepository(EntityLog);
-
-        const entityLog = entityLogRepository.create({
+        const entityLog = new CreateEntityLogService();
+        await entityLog.execute({
             user_id: user_id,
             entity_id: id,
             code: `UPDATE`,
             message: `{service:'update',name: {from:'${entityExists.name}',to:'${name}'}`
         });
-
-        await entityLogRepository.save(entityLog);
 
         const entity = await entityRepository.findOne(id);
 

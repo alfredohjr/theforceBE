@@ -1,8 +1,6 @@
-// TODO:empty
-
 import { getRepository } from 'typeorm';
 import UserPermission from '../models/UserPermission';
-import UserLog from '../models/UserLog';
+import CreateUserLogService from './CreateUserLogService';
 
 interface Request {
     id: string;
@@ -28,15 +26,12 @@ class UpdateUserPermissionService {
             permission_id: permission_id ? permission_id : userpermissionExists.permission_id
         });
 
-        const userLogRepository = getRepository(UserLog);
-
-        const userpermissionLog = userLogRepository.create({
+        const userLog = new CreateUserLogService();
+        await userLog.execute({
             user_id: user_id,
             code: `UPDATE`,
             message: `{service:'update',permission_id: {from:'${permission_id}',to:'${userpermissionExists.permission_id}'}}`
         });
-
-        await userLogRepository.save(userpermissionLog);
 
         const userpermission = await userpermissionRepository.findOne(id);
 
