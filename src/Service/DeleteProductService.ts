@@ -5,6 +5,7 @@ import Product from "../models/Product";
 import ProductLog from "../models/ProductLog";
 import ProductPrice from "../models/ProductPrice";
 import Stock from "../models/Stock";
+import CreateProductLogService from "./CreateProductLogService";
 
 interface Request {
     id: string;
@@ -56,16 +57,13 @@ class DeleteProductService {
             deleted_at: new Date()
         });
 
-        const productLogRepository = getRepository(ProductLog);
-
-        const productLog = productLogRepository.create({
+        const productLog = new CreateProductLogService();
+        await productLog.execute({
             user_id: user_id,
             product_id: id,
             code: `delete`,
             message: `{service:'delete'}`
         });
-
-        await productLogRepository.save(productLog);
 
     }
 }

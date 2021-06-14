@@ -1,6 +1,7 @@
 import { getRepository } from 'typeorm';
 import StockMovement from '../models/StockMovement';
 import StockLog from '../models/StockLog';
+import CreateStockLogService from './CreateStockLogService';
 
 interface Request {
     id: string;
@@ -28,15 +29,13 @@ class DeleteStockMovementService {
             deleted_at: new Date()
         });
 
-        const stocklog = stockLogRepository.create({
-            deposit_id: stockmovementExists.deposit_id,
-            product_id: stockmovementExists.product_id,
-            user_id,
+        const stockLog = new CreateStockLogService();
+        await stockLog.execute({
+            stock_id: stockmovementExists.id,
             code: 'DELETE',
-            message: `{delete:{document_id:'${id}'}}`
+            message: `{delete:{document_id:'${id}'}}`,
+            user_id
         });
-
-        await stockLogRepository.save(stocklog);
 
     }
 }

@@ -1,6 +1,7 @@
 import { getRepository } from 'typeorm';
 import Document from '../models/Document';
 import DocumentLog from '../models/DocumentLog';
+import CreateDocumentLogService from './CreateDocumentLogService';
 
 interface Request {
     id: string;
@@ -11,7 +12,6 @@ class DeleteDocumentService {
     public async execute({id, user_id}: Request): Promise<void> {
 
         const documentRepository = getRepository(Document);
-        const documentLogRepository = getRepository(DocumentLog);
 
         const documentExists = await documentRepository.findOne({
             where: {
@@ -28,14 +28,13 @@ class DeleteDocumentService {
             deleted_at: new Date()
         });
 
-        const documentlog = documentLogRepository.create({
+        const documentLog = new CreateDocumentLogService();
+        await documentLog.execute({
             user_id,
             document_id: id,
             code: 'DELETE',
             message: `{delete:'${id}'}`
         });
-
-        await documentLogRepository.save(documentlog);
 
     }
 }

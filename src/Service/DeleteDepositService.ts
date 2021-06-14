@@ -1,9 +1,8 @@
-// TODO: add deposit log service
-
 import { Equal, getRepository, MoreThan, Not } from "typeorm";
 import Deposit from "../models/Deposit";
 import Document from "../models/Document";
 import Stock from "../models/Stock";
+import CreateDepositLogService from "./CreateDepositLogService";
 
 interface Request {
     id: string;
@@ -53,6 +52,14 @@ class DeleteDepositService {
 
         await depositRepository.update(depositExists.id,{
             deleted_at: new Date()
+        });
+
+        const depositLog = new CreateDepositLogService();
+        await depositLog.execute({
+            code:'DELETE',
+            message:`{delete:'${id}'}`,
+            deposit_id:id,
+            user_id
         });
 
     }
