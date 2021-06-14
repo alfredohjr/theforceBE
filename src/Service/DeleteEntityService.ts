@@ -1,4 +1,5 @@
 import { getRepository } from 'typeorm';
+import Document from '../models/Document';
 import Entity from '../models/Entity';
 import EntityLog from '../models/EntityLog';
 
@@ -12,6 +13,7 @@ class DeleteEntityService {
 
         const entityRepository = getRepository(Entity);
         const entityLogRepository = getRepository(EntityLog);
+        const documentRepository = getRepository(Document);
 
         const entityExists = await entityRepository.findOne({
             where: {
@@ -22,6 +24,18 @@ class DeleteEntityService {
 
         if(!entityExists) {
             throw new Error('entity not found');
+        }
+
+        const isOpenDocument = await documentRepository.findOne({
+            where: {
+                entity_id: id, 
+                closed_at: null,
+                deleted_at: null
+            }
+        })
+
+        if(isOpenDocument) {
+            throw new Error('find open document for this entity, delete abort');
         }
 
         await entityRepository.update(entityExists.id,{
