@@ -48,7 +48,9 @@ class DeleteUserService {
         );
 
         await usersRepository.update(userExists.id,{
-            deleted_at: new Date()
+            deleted_at: new Date(),
+            name: '---[DELETED]---',
+            email: '---[DELETED]---'
         });
         
     }
