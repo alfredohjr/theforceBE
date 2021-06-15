@@ -1,43 +1,61 @@
-import { getRepository } from 'typeorm';
-import StockMovement from '../models/StockMovement';
+import { getRepository } from "typeorm";
+import StockMovement from "../models/StockMovement";
 
-interface Request{
-    document_id: string;
-    deposit_id: string;
-    product_id: string;
-    user_id: string;
-    value: number;
-    type: 'in' | 'out';
-};
+interface Request {
+    user_id:string; 
+    deposit_id:string;
+    document_id:string;
+    product_id:string;
+    type:'in' | 'out';
+    value:number;
+    amount: number;
+}
 
 class CreateStockMovementService {
-    public async execute({document_id, deposit_id, product_id, value, type, user_id}:Request): Promise<StockMovement>{
-        const stockmovementRepository = getRepository(StockMovement);
+    public async execute({
+        user_id, 
+        deposit_id, 
+        document_id, 
+        product_id, 
+        type, 
+        value,
+        amount}: Request): Promise<void> {
 
-        const stockmovementExists = await stockmovementRepository.find({
-             where:{
-                 document_id,
-                 deposit_id,
-                 product_id
-             }
+        const stockMovementRepository = getRepository(StockMovement);
+
+        if(value < 0) {
+            throw new Error('negative value not allowed');
+        }
+
+        if(amount < 0) {
+            throw new Error('negative amount not allowed');
+        }
+
+        const stockMovExists = await stockMovementRepository.findOne({
+            where: {
+                document_id,
+                deposit_id,
+                product_id
+            }
         });
 
-        if(stockmovementExists) {
-            throw new Error('stock movement already exists');
-        };
+        if(stockMovExists) {
+            throw new Error('moviment already exists');
+        }
 
-        const stockmovement = stockmovementRepository.create({
-            document_id, 
+        const stockMov = stockMovementRepository.create({
+            value,
+            amount,
+            type, 
             deposit_id, 
             product_id, 
-            value, 
-            type, 
-            user_id
+            user_id, 
+            document_id
         });
 
-        await stockmovementRepository.save(stockmovement);
+        await stockMovementRepository.save(stockMov);
 
-        return stockmovement;
     }
 }
+
 export default CreateStockMovementService;
