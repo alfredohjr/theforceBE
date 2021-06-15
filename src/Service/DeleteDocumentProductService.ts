@@ -1,4 +1,5 @@
-import { getRepository } from 'typeorm';
+import { getRepository, Not } from 'typeorm';
+import Document from '../models/Document';
 import DocumentProduct from '../models/DocumentProduct';
 import CreateDocumentLogService from './CreateDocumentLogService';
 
@@ -21,6 +22,18 @@ class DeleteDocumentProductService {
 
         if(!documentproductExists) {
             throw new Error('document product not found');
+        }
+
+        const documentRepository = getRepository(Document);
+        await documentRepository.findOne({
+            where: {
+                id: documentproductExists.document_id,
+                closed_at: Not(null)
+            }
+        });
+
+        if(documentRepository) {
+            throw new Error('Document is closed, delete is not possible');
         }
 
         await documentproductRepository.update(documentproductExists.id,{
