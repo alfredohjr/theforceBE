@@ -13,6 +13,10 @@ class CreateEntityService {
         const entityRepository = getRepository(EntityModel);
         const sendEmail = new SendEmailService();
 
+        if(name.length < 10) {
+            throw new Error('minumum size of name is 10');
+        }
+
         const entityExists = await entityRepository.findOne({
             where: {
                 name

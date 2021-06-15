@@ -5,11 +5,16 @@ import CreateEntityLogService from './CreateEntityLogService';
 interface Request {
     id: string;
     user_id: string;
-    name?: string;
+    name: string;
 }
 
 class UpdateEntityService {
     public async execute({id, user_id, name}: Request): Promise<Entity> {
+
+        if(name.length < 10) {
+            throw new Error('minumum size of name is 10');
+        }
+
         const entityRepository = getRepository(Entity);
 
         const entityExists = await entityRepository.findOne(id);

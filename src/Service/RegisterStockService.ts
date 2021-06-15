@@ -14,6 +14,10 @@ class RegisterStockService {
     public async execute({user_id, deposit_id, product_id, value, type, amount}: Request): Promise<Stock | void> {
         const stockRepository = getRepository(Stock);
 
+        if(value < 0) {
+            throw new Error('negative value not allowed');
+        }
+
         const stockExists = await stockRepository.findOne({
             where: {
                 deposit_id,

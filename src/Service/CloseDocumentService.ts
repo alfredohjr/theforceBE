@@ -2,7 +2,7 @@ import { getRepository } from "typeorm";
 import Document from "../models/Document";
 import DocumentProduct from "../models/DocumentProduct";
 import CreateDocumentLogService from "./CreateDocumentLogService";
-import CreateStockMovementeService from "./CreateStockMovementeService";
+import CreateStockMovementService from "./CreateStockMovementService";
 import IsValidDepositService from "./IsValidDepositService";
 import IsValidDocumentService from "./IsValidDocumentService";
 import IsValidEntityService from "./IsValidEntityService";
@@ -44,7 +44,7 @@ class CloseDocumentService {
             }
         });
 
-        const createStockMovement = new CreateStockMovementeService();
+        const createStockMovement = new CreateStockMovementService();
         const registerStock = new RegisterStockService();
 
         var p: DocumentProduct;

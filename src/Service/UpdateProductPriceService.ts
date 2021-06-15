@@ -12,6 +12,10 @@ class UpdateProductPriceService {
     public async execute({id, user_id, price}: Request): Promise<ProductPrice> {
         const productpriceRepository = getRepository(ProductPrice);
 
+        if(price < 0) {
+            throw new Error('negative value not allowed');
+        }
+
         const productpriceExists = await productpriceRepository.findOne(id);
 
         if(!productpriceExists) {

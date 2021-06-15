@@ -13,6 +13,14 @@ class UpdateDocumentProductService {
     public async execute({id, user_id, value, amount}: Request): Promise<DocumentProduct> {
         const documentproductRepository = getRepository(DocumentProduct);
 
+        if(value < 0) {
+            throw new Error('negative value not allowed');
+        }
+
+        if(amount < 0) {
+            throw new Error('negative amount not allowed');
+        }
+        
         const documentproductExists = await documentproductRepository.findOne(id);
 
         if(!documentproductExists) {

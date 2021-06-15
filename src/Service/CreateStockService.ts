@@ -27,7 +27,8 @@ class CreateStockService {
             user_id,
             deposit_id,
             product_id,
-            value: 0
+            value: 0,
+            amount: 0
         });
 
         await stockRepository.save(stock);

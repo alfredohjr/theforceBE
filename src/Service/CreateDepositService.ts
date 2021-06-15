@@ -8,6 +8,11 @@ interface Request {
 
 class CreateDepositService {
     public async execute({name, user_id}: Request) : Promise<Deposit> {
+
+        if(name.length < 10) {
+            throw new Error('minumum size of name is 10');
+        }
+
         const depositRepository = getRepository(Deposit);
 
         const depositExists = await depositRepository.findOne({

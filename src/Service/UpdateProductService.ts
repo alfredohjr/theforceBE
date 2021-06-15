@@ -5,11 +5,16 @@ import CreateProductLogService from "./CreateProductLogService";
 interface Request {
     id: string;
     user_id: string;
-    name?: string;
+    name: string;
 }
 
 class UpdateProductService {
     public async execute({id, user_id, name}: Request): Promise<Product> {
+
+        if(name.length < 10) {
+            throw new Error('minumum size of name is 10');
+        }
+
         const productRepository = getRepository(Product);
 
         const productExists = await productRepository.findOne(id);

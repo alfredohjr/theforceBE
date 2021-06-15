@@ -32,6 +32,9 @@ class CreateProductPriceService {
             throw new Error('start is before now');
         }
 
+        if(price < 0) {
+            throw new Error('negative price not allowed');
+        }
         
         const productprice = productpriceRepository.create({
             user_id, 

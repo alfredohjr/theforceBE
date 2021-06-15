@@ -11,6 +11,10 @@ interface Request {
 
 class CreateProductService {
     public async execute({name, user_id}: Request): Promise<Product> {
+
+        if(name.length < 10) {
+            throw new Error('minumum size of name is 10');
+        }
         
         if(!(name || user_id)) {
             throw new Error('please, send name of product')

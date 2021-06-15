@@ -12,6 +12,10 @@ interface Request {
 class CreateUserService {
     public async execute({ name, email, password}: Request): Promise<User> {
 
+        if(name.length < 10) {
+            throw new Error('minumum size of name is 10');
+        }
+
         if(!(name || email || password)) {
             throw new Error('Please! send name, email and password!');
         }

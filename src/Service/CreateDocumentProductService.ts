@@ -13,6 +13,14 @@ class CreateDocumentProductService {
     public async execute({user_id, document_id, product_id, value, amount}: Request): Promise<DocumentProduct> {
         const documentProductRepository = getRepository(DocumentProduct);
 
+        if(value < 0) {
+            throw new Error('negative value not allowed');
+        }
+
+        if(amount < 0) {
+            throw new Error('negative amount not allowed');
+        }
+
         const docProdExists = await documentProductRepository.findOne({
             where: {
                 document_id,

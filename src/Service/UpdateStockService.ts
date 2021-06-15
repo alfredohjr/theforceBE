@@ -6,11 +6,16 @@ interface Request {
     id: string;
     user_id: string;
     value: number;
+
 }
 
 class UpdateStockService {
     public async execute({id, user_id, value}: Request): Promise<Stock> {
         const stockRepository = getRepository(Stock);
+
+        if(value < 0) {
+            throw new Error('negative value not allowed');
+        }
 
         const stockExists = await stockRepository.findOne(id);
 
@@ -19,7 +24,7 @@ class UpdateStockService {
         }
 
         await stockRepository.update(stockExists.id,{
-            value: value ? value : stockExists.value
+            value: value ? value : stockExists.value,
         });
 
         const stockLog = new CreateStockLogService();
@@ -27,7 +32,7 @@ class UpdateStockService {
             user_id: user_id,
             stock_id: id,
             code: `update`,
-            message: `{service:'update',value: {from:'${stockExists.value}',to:'${value}'}`
+            message: `{service:'UpdateStockService', value: {from:'${stockExists.value}',to:'${value}'}`
         });
 
         const stock = await stockRepository.findOne(id);
