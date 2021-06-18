@@ -1,43 +1,20 @@
-// TODO:empty
-
 import { request, response, Router } from 'express';
 
-import AuthUser from '../middlewares/AuthUser.middlewares';
+import GetStockMovementService from '../Service/GetStockMovementService';
 
 const stockmovementRouter = Router();
 
-stockmovementRouter.use(AuthUser);
-
-
-stockmovementRouter.post('/', async (request, response) => {
-    try {
-        response.status(500).json({message:`${request.method} is empty`})
-    } catch (err) {
-        response.status(500).json({message:`${request.method} is empty`})
-    }
-});
-
-stockmovementRouter.put('/', async (request, response) => {
-    try {
-        response.status(500).json({message:`${request.method} is empty`})
-    } catch (err) {
-        response.status(500).json({message:`${request.method} is empty`})
-    }
-});
-
-stockmovementRouter.delete('/', async (request, response) => {
-    try {
-        response.status(500).json({message:`${request.method} is empty`})
-    } catch (err) {
-        response.status(500).json({message:`${request.method} is empty`})
-    }
-});
-
 stockmovementRouter.get('/', async (request, response) => {
     try {
-        response.status(500).json({message:`${request.method} is empty`})
+
+        const { deposit_id, product_id } = request.body;
+
+        const getStockMovement = new GetStockMovementService();
+        const stockMovement = await getStockMovement.execute({ deposit_id, product_id });
+
+        response.status(200).json(stockMovement);
     } catch (err) {
-        response.status(500).json({message:`${request.method} is empty`})
+        response.status(400).json({error:err.message});
     }
 });
 

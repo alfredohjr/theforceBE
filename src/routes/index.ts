@@ -11,6 +11,7 @@ import depositRouter from './deposit.router';
 import entityRouter from './entity.router';
 import documentRouter from './document.router';
 import AuthUser from '../middlewares/AuthUser.middlewares';
+import stockRouter from './stock.router';
 
 const routes = Router();
 
@@ -26,5 +27,6 @@ routes.use('/product', productRouter);
 routes.use('/deposit', depositRouter);
 routes.use('/entity', entityRouter);
 routes.use('/document', documentRouter);
+routes.use('/stock', stockRouter);
 
 export default routes;
