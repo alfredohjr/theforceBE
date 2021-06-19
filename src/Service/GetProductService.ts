@@ -7,12 +7,19 @@ interface Request {
 }
 
 class GetProductService {
-    public async execute({id}: Request): Promise<Product[] | Product> {
+    public async execute({id}: Request): Promise<Product[] | Product | any> {
         const productRepository = getRepository(Product);
 
         if(id) {
             const isValidProduct = new IsValidProductService();
-            const product = await isValidProduct.execute({id});
+            await isValidProduct.execute({id});
+
+            const product = await productRepository.findOne({
+                where: {
+                    id
+                }
+            })
+
             return product;
         }
 
