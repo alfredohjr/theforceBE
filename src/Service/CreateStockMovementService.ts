@@ -35,7 +35,8 @@ class CreateStockMovementService {
             where: {
                 document_id,
                 deposit_id,
-                product_id
+                product_id,
+                deleted_at: null
             }
         });
 
