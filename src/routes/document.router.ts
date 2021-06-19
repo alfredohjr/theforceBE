@@ -4,6 +4,7 @@ import CreateDocumentService from '../Service/CreateDocumentService';
 import DeleteDocumentService from '../Service/DeleteDocumentService';
 import GetDocumentService from '../Service/GetDocumentService';
 import IsValidDepositService from '../Service/IsValidDepositService';
+import ReOpenDocumentService from '../Service/ReOpenDocumentService';
 import documentProductRouter from './documentProduct.router';
 
 const documentRouter = Router();
@@ -63,7 +64,7 @@ documentRouter.delete('/', async(request, response) => {
         const document = new DeleteDocumentService();
         await document.execute({id,user_id});
 
-        return response.status(200).json({ message: `document ${document_id} is deleted`});
+        return response.status(200).json({ message: `document ${id} is deleted`});
     } catch (err) {
         response.status(400).json({ error: err.message})
     }
@@ -76,6 +77,20 @@ documentRouter.post('/close', async(request, response) => {
 
         const closeDocument = new CloseDocumentService();
         await closeDocument.execute({id, user_id});
+
+        return response.status(200).json({ message: `success`});
+    } catch (err) {
+        response.status(400).json({ error: err.message})
+    }
+});
+
+documentRouter.post('/open', async(request, response) => {
+    try {
+        const { id } = request.body;
+        const user_id = request.user.id;
+
+        const openDocument = new ReOpenDocumentService();
+        await openDocument.execute({id, user_id});
 
         return response.status(200).json({ message: `success`});
     } catch (err) {
