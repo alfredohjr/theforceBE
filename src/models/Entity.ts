@@ -16,6 +16,9 @@ class EntityModel {
     type: 'client' | 'provider';
 
     @Column()
+    avatar: string;
+
+    @Column()
     deleted_at: Date;
 
     @CreateDateColumn()
