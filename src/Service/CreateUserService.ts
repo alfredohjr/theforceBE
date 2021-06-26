@@ -2,6 +2,7 @@ import { getRepository } from 'typeorm';
 import bcrypt from 'bcrypt';
 
 import User from '../models/User';
+import Queue from '../lib/Queue';
 
 interface Request {
     name: string;
@@ -42,6 +43,8 @@ class CreateUserService {
         });
 
         await usersRepository.save(user);
+
+        await Queue.add('RegistrationMail', user);
 
         return user;
     }
