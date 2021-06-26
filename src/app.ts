@@ -3,10 +3,12 @@ import 'reflect-metadata';
 
 import createConnection from './database';
 import routes from './routes';
+import uploadConfig from './config/upload';
 
 createConnection();
 const app = express();
 app.use(express.json());
+app.use('/media', express.static(uploadConfig.directory))
 app.use(routes);
 
 app.get('/', (request, response) => {
