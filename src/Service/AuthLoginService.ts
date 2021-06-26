@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 import User from '../models/User';
-import Token from '../models/Token';
+import TokenModel from '../models/Token';
 
 interface Request {
     email: string;
@@ -15,14 +15,14 @@ interface Token {
 }
 
 class AuthLoginService {
-    public async execute({ email, password } : Request) : Promise<Token> {
+    public async execute({ email, password } : Request) : Promise<TokenModel> {
 
         if(!(email || password)) {
             throw new Error('please, send email and password.');
         }
 
         const usersRepository = getRepository(User);
-        const tokenRepository = getRepository(Token);
+        const tokenRepository = getRepository(TokenModel);
 
         const userExists = await usersRepository.findOne({
             where: {
@@ -41,7 +41,7 @@ class AuthLoginService {
             throw new Error('user or password is invalid.');
         }
         
-        const token = jwt.sign({ id:userExists.id },'ONovoSiteSemSentido', {
+        const token = jwt.sign({ id:userExists.id },process.env.SECRET, {
             expiresIn: (60*60)*24
         })
 

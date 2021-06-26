@@ -19,7 +19,7 @@ class AuthUserService {
             throw new Error('please, send valid token');
         }
 
-        const isValidToken = jwt.verify(token,'ONovoSiteSemSentido');
+        const isValidToken = jwt.verify(token,process.env.SECRET);
 
         if(!isValidToken) {
             throw new Error('invalid token');
