@@ -13,6 +13,9 @@ class Product {
     user_id: string;
 
     @Column()
+    avatar: string;
+
+    @Column()
     deleted_at: Date;
 
     @CreateDateColumn()

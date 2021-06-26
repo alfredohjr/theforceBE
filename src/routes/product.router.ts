@@ -1,11 +1,18 @@
 import { request, response, Router } from 'express';
+import multer from 'multer';
+
+import uploadConfig from '../config/upload';
 
 import CreateProductService from '../Service/CreateProductService';
+import DeleteProductAvatarService from '../Service/DeleteProductAvatarService';
 import DeleteProductService from '../Service/DeleteProductService';
 import GetProductService from '../Service/GetProductService';
 import IsValidProductService from '../Service/IsValidProductService';
+import UpdateProductAvatarService from '../Service/UpdateProductAvatarService';
 import UpdateProductService from '../Service/UpdateProductService';
 import priceRouter from './productPrice.router';
+
+const upload = multer(uploadConfig);
 
 const productRouter = Router();
 
@@ -80,6 +87,42 @@ productRouter.delete('/', async (request, response) => {
     } catch (err) {
         return response.status(400).json({error: err.message})
     }
+});
+
+productRouter.patch(
+    '/avatar/:product_id',
+    upload.single('avatar'),
+    async (request, response) => {
+        try {
+            const user_id = request.user.id;
+            const avatar = request.file?.filename;
+            const { product_id } = request.params;
+
+            const updateProductAvatar = new UpdateProductAvatarService();
+
+            await updateProductAvatar.execute({user_id, avatar, id: product_id});
+
+            return response.status(200).json({ message: 'success'});            
+        } catch (err) {
+            return response.status(400).json({ error: err.message });
+        }
+});
+
+productRouter.delete(
+    '/avatar',
+    async (request, response) => {
+        try {
+            const user_id = request.user.id;
+            const { id } = request.body;
+
+            const deleteProductAvatar = new DeleteProductAvatarService();
+
+            await deleteProductAvatar.execute({user_id, id});
+
+            return response.status(200).json({ message: 'success'});            
+        } catch (err) {
+            return response.status(400).json({ error: err.message });
+        }
 });
 
 
