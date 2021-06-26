@@ -19,6 +19,9 @@ class User {
     ismaster: boolean;
 
     @Column()
+    avatar: string;
+
+    @Column()
     deleted_at: Date;
 
     @CreateDateColumn()
