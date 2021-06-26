@@ -1,3 +1,5 @@
+// todo: coverter para o arquivo de configuração
+
 import * as nodemailer from 'nodemailer';
 import { resolve } from 'path';
 import exphbs from 'express-handlebars';
@@ -12,6 +14,9 @@ interface Request {
 
 class SendEmailService {
     public async execute({to, subject, template, context}: Request): Promise<void> {
+
+        throw new Error('service is old, please see email lib to send messages')
+
         const mailOptions = {
             from: 'alfredo@test.com.br',
             to,
