@@ -1,10 +1,11 @@
+import { nextDay } from 'date-fns';
 import { Router } from 'express';
 
 import AuthLoginService from '../Service/AuthLoginService';
 
 const loginRouter = Router();
 
-loginRouter.post('/', async (request, response) => {
+loginRouter.post('/', async (request, response, next) => {
     try {
         const { email, password } = request.body;
 
@@ -19,7 +20,7 @@ loginRouter.post('/', async (request, response) => {
         return response.status(200).json(token);
 
     } catch (err) {
-        return response.status(400).json({ error: err.message});
+        next(err);
     }
 })
 

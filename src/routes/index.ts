@@ -1,4 +1,6 @@
 import Router from 'express';
+import { NextFunction, Request, Response } from 'express';
+
 import cors from 'cors';
 
 import PermissionUser from '../middlewares/Permission.middlewares';

@@ -3,6 +3,8 @@ import { getRepository } from 'typeorm';
 import User from '../models/User';
 import Token from '../models/Token';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     email: string;
     token?: string;
@@ -12,7 +14,7 @@ class DeleteUserService {
     public async execute({ email, token }: Request): Promise<void> {
         
         if(!email) {
-            throw new Error('please, send email for delete.');
+            throw new AppError('please, send email for delete.');
         }
 
         const usersRepository = getRepository(User);
@@ -24,7 +26,7 @@ class DeleteUserService {
         })
 
         if(!userExists){
-            throw new Error('user not found');
+            throw new AppError('user not found');
         }
 
         const tokenRepository = getRepository(Token);
@@ -35,7 +37,7 @@ class DeleteUserService {
         });
 
         if(tokenInBlackList) {
-            throw new Error('invalid token')
+            throw new AppError('invalid token')
         }
 
         await tokenRepository.update(

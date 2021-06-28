@@ -1,6 +1,8 @@
 import { getRepository } from "typeorm";
 import EntityModel from "../models/Entity";
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
 }
@@ -16,11 +18,11 @@ class IsValidEntityService {
         });
 
         if(!entityExists) {
-            throw new Error('entity not found');
+            throw new AppError('entity not found');
         }
 
         if(entityExists.deleted_at !== null) {
-            throw new Error('entity is broken, contact administrator');
+            throw new AppError('entity is broken, contact administrator');
         }
     }
 }

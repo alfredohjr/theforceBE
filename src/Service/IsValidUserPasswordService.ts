@@ -3,6 +3,8 @@ import bcrypt from 'bcrypt';
 
 import User from "../models/User";
 
+import AppError from '../errors/AppError';
+
 interface Request {
     email: string;
     password: string;
@@ -12,7 +14,7 @@ class IsValidUserPasswordService {
     public async execute({email, password}: Request): Promise<void> {
 
         if(!(email || password)) {
-            throw new Error('please, send email and password.');
+            throw new AppError('please, send email and password.');
         }
 
         const usersRepository = getRepository(User);
@@ -24,13 +26,13 @@ class IsValidUserPasswordService {
         });
 
         if(!userExists) {
-            throw new Error('user not found.');
+            throw new AppError('user not found.');
         }
 
         const passwordIsValid = await bcrypt.compare(password,userExists.password);
 
         if(!passwordIsValid) {
-            throw new Error('user or password is invalid.');
+            throw new AppError('user or password is invalid.');
         }
 
     }

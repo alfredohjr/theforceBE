@@ -1,3 +1,4 @@
+import AppError from '../errors/AppError';
 
 interface Request {
     id: string;
@@ -5,7 +6,7 @@ interface Request {
 
 class UpdateStockMovementService {
     public async execute({id}: Request): Promise<void> {
-        throw new Error('is not possible to update stock movement')
+        throw new AppError('is not possible to update stock movement')
     }
 }
 

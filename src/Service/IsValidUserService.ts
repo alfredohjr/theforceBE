@@ -1,6 +1,8 @@
 import { getRepository } from 'typeorm';
 import User from '../models/User';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
 };
@@ -16,11 +18,11 @@ class IsValidUserService {
         });
 
         if(!userExists) {
-            throw new Error('user not found');
+            throw new AppError('user not found');
         }
 
         if(userExists.deleted_at !== null) {
-            throw new Error('user deleted');
+            throw new AppError('user deleted');
         }
 
     }

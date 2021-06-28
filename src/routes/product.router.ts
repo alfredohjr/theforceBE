@@ -18,7 +18,7 @@ const productRouter = Router();
 
 productRouter.use('/price',priceRouter);
 
-productRouter.get('/', async (request, response) => {
+productRouter.get('/', async (request, response, next) => {
     try {
         const {id} = request.body;
         const getProducts = new GetProductService();
@@ -31,7 +31,7 @@ productRouter.get('/', async (request, response) => {
     }
 });
 
-productRouter.post('/', async (request, response) => {
+productRouter.post('/', async (request, response, next) => {
     try {
         const { name } = request.body;
         const user_id = request.user.id;
@@ -47,7 +47,7 @@ productRouter.post('/', async (request, response) => {
     }
 });
 
-productRouter.put('/', async (request, response) => {
+productRouter.put('/', async (request, response, next) => {
     try {
         const { id, name } = request.body;
         const user_id = request.user.id;
@@ -70,7 +70,7 @@ productRouter.put('/', async (request, response) => {
     }
 });
 
-productRouter.delete('/', async (request, response) => {
+productRouter.delete('/', async (request, response, next) => {
     try {
         const { id } = request.body;
         const user_id = request.user.id;
@@ -92,7 +92,7 @@ productRouter.delete('/', async (request, response) => {
 productRouter.patch(
     '/avatar/:product_id',
     upload.single('avatar'),
-    async (request, response) => {
+    async (request, response, next) => {
         try {
             const user_id = request.user.id;
             const avatar = request.file?.filename;
@@ -104,13 +104,13 @@ productRouter.patch(
 
             return response.status(200).json({ message: 'success'});            
         } catch (err) {
-            return response.status(400).json({ error: err.message });
+            next(err);
         }
 });
 
 productRouter.delete(
     '/avatar',
-    async (request, response) => {
+    async (request, response, next) => {
         try {
             const user_id = request.user.id;
             const { id } = request.body;
@@ -121,7 +121,7 @@ productRouter.delete(
 
             return response.status(200).json({ message: 'success'});            
         } catch (err) {
-            return response.status(400).json({ error: err.message });
+            next(err);
         }
 });
 

@@ -11,7 +11,7 @@ const documentRouter = Router();
 
 documentRouter.use('/product',documentProductRouter);
 
-documentRouter.get('/', async (request, response) => {
+documentRouter.get('/', async (request, response, next) => {
     try {
         
         const getDocument = new GetDocumentService();
@@ -19,11 +19,11 @@ documentRouter.get('/', async (request, response) => {
 
         return response.status(200).json(documents);
     } catch (err) {
-        return response.status(400).json({error: err.message});
+        next(err);
     }
 });
 
-documentRouter.post('/', async(request, response) => {
+documentRouter.post('/', async(request, response, next) => {
     try {
 
         const { key, deposit_id, entity_id, type } = request.body;
@@ -43,19 +43,19 @@ documentRouter.post('/', async(request, response) => {
 
         return response.status(200).json(document);
     } catch (err) {
-        response.status(400).json({ error: err.message})
+        next(err);
     }
 });
 
-documentRouter.put('/', async(request, response) => {
+documentRouter.put('/', async(request, response, next) => {
     try {
         return response.status(500).json({ message: `${request.method} is empty`});
     } catch (err) {
-        response.status(400).json({ error: err.message})
+        next(err);
     }
 });
 
-documentRouter.delete('/', async(request, response) => {
+documentRouter.delete('/', async(request, response, next) => {
     try {
 
         const { id } = request.body;
@@ -66,11 +66,11 @@ documentRouter.delete('/', async(request, response) => {
 
         return response.status(200).json({ message: `document ${id} is deleted`});
     } catch (err) {
-        response.status(400).json({ error: err.message})
+        next(err);
     }
 });
 
-documentRouter.post('/close', async(request, response) => {
+documentRouter.post('/close', async(request, response, next) => {
     try {
         const { id } = request.body;
         const user_id = request.user.id;
@@ -80,11 +80,11 @@ documentRouter.post('/close', async(request, response) => {
 
         return response.status(200).json({ message: `success`});
     } catch (err) {
-        response.status(400).json({ error: err.message})
+        next(err);
     }
 });
 
-documentRouter.post('/open', async(request, response) => {
+documentRouter.post('/open', async(request, response, next) => {
     try {
         const { id } = request.body;
         const user_id = request.user.id;
@@ -94,7 +94,7 @@ documentRouter.post('/open', async(request, response) => {
 
         return response.status(200).json({ message: `success`});
     } catch (err) {
-        response.status(400).json({ error: err.message})
+        next(err);
     }
 });
 

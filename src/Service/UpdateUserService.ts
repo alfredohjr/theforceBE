@@ -4,6 +4,8 @@ import bcrypt from 'bcrypt';
 import User from '../models/User';
 import CreateUserLogService from './CreateUserLogService';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     name?: string;
     email: string;
@@ -14,7 +16,7 @@ interface Request {
 class UpdateUserService {
     public async execute({name, email, password, newPassword}:Request): Promise<User | undefined> {
         if(!(password)) {
-            throw new Error('Please, send password.');
+            throw new AppError('Please, send password.');
         }
 
         const usersRepository = getRepository(User);
@@ -26,7 +28,7 @@ class UpdateUserService {
         })
 
         if(!userExists) {
-            throw new Error('user not found');
+            throw new AppError('user not found');
         }
 
         const salt = await bcrypt.genSalt(8);

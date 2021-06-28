@@ -2,6 +2,8 @@ import { getRepository } from 'typeorm';
 import ProductDetail from '../models/ProductDetail';
 import CreateProductLogService from './CreateProductLogService';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
     user_id: string;
@@ -15,11 +17,11 @@ class UpdateProductDetailService {
         const productdetailExists = await productdetailRepository.findOne(id);
 
         if(!productdetailExists) {
-            throw new Error('productdetail not found');
+            throw new AppError('productdetail not found');
         }
 
         if(!(text)) {
-            throw new Error('please, send name for update');
+            throw new AppError('please, send name for update');
         }
 
         await productdetailRepository.update(productdetailExists.id,{

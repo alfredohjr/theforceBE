@@ -2,6 +2,8 @@ import { getRepository } from 'typeorm';
 import ProductPrice from '../models/ProductPrice';
 import ProductLog from '../models/ProductLog';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
     user_id: string;
@@ -21,7 +23,7 @@ class DeleteProductPriceService {
         });
 
         if(!productpriceExists) {
-            throw new Error('productprice not found');
+            throw new AppError('productprice not found');
         }
 
         await productpriceRepository.update(productpriceExists.id,{

@@ -3,6 +3,8 @@ import StockMovement from '../models/StockMovement';
 import StockLog from '../models/StockLog';
 import CreateStockLogService from './CreateStockLogService';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
     user_id: string;
@@ -22,7 +24,7 @@ class DeleteStockMovementService {
         });
 
         if(!stockmovementExists) {
-            throw new Error('stock movement not found');
+            throw new AppError('stock movement not found');
         }
 
         await stockmovementRepository.update(stockmovementExists.id,{

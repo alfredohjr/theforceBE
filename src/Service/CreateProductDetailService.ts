@@ -1,6 +1,8 @@
 import { getRepository } from 'typeorm';
 import ProductDetail from '../models/ProductDetail';
 
+import AppError from '../errors/AppError';
+
 interface Request{
     user_id: string;
     product_id: string;
@@ -19,7 +21,7 @@ class CreateProductDetailService {
         });
 
         if(productdetailExists) {
-            throw new Error('product detail already exists');
+            throw new AppError('product detail already exists');
         };
 
         const productdetail = productdetailRepository.create({

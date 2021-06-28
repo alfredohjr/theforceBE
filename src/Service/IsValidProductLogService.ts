@@ -1,6 +1,8 @@
 import { getRepository } from 'typeorm';
 import ProductLog from '../models/ProductLog';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
 };
@@ -16,7 +18,7 @@ class IsValidProductLogService {
         });
 
         if(!productlogExists) {
-            throw new Error('productlog not found');
+            throw new AppError('productlog not found');
         }
 
     }

@@ -1,6 +1,8 @@
 import { getRepository } from 'typeorm';
 import DocumentLog from '../models/DocumentLog';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
 };
@@ -16,7 +18,7 @@ class IsValidDocumentLogService {
         });
 
         if(!documentlogExists) {
-            throw new Error('documentlog not found');
+            throw new AppError('documentlog not found');
         }
 
     }

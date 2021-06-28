@@ -8,6 +8,8 @@ import IsValidDocumentService from "./IsValidDocumentService";
 import IsValidEntityService from "./IsValidEntityService";
 import RegisterStockService from "./RegisterStockService";
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
     user_id: string;
@@ -27,7 +29,7 @@ class CloseDocumentService {
         });
 
         if(!document){
-            throw new Error('document not found');
+            throw new AppError('document not found');
         }
 
         const isValidDeposit = new IsValidDepositService();

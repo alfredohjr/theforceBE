@@ -2,6 +2,8 @@ import { getRepository } from "typeorm";
 import EntityModel from "../models/Entity";
 import SendEmailService from "./SendEmailService";
 
+import AppError from '../errors/AppError';
+
 interface Request {
     name: string;
     type: 'client' | 'provider';
@@ -14,7 +16,7 @@ class CreateEntityService {
         const sendEmail = new SendEmailService();
 
         if(name.length < 10) {
-            throw new Error('minumum size of name is 10');
+            throw new AppError('minumum size of name is 10');
         }
 
         const entityExists = await entityRepository.findOne({
@@ -24,11 +26,11 @@ class CreateEntityService {
         });
 
         if(entityExists) {
-            throw new Error('please, send new name for this entity');
+            throw new AppError('please, send new name for this entity');
         }
 
         if(!['client','provider'].includes(type)) {
-            throw new Error('please, send client or provider for type of entity');
+            throw new AppError('please, send client or provider for type of entity');
         }
 
         const entity = entityRepository.create({

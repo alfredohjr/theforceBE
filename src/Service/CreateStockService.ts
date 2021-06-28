@@ -1,6 +1,8 @@
 import { getRepository } from 'typeorm';
 import Stock from '../models/Stock';
 
+import AppError from '../errors/AppError';
+
 interface Request{
     user_id: string;
     deposit_id: string;
@@ -20,7 +22,7 @@ class CreateStockService {
         });
 
         if(stockExists) {
-            throw new Error('stock already exists');
+            throw new AppError('stock already exists');
         };
 
         const stock = stockRepository.create({

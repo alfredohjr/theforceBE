@@ -1,6 +1,8 @@
 import { getRepository } from "typeorm";
 import Document from "../models/Document";
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
 }
@@ -16,19 +18,19 @@ class IsValidDocumentService {
         });
 
         if(!documentExists) {
-            throw new Error('document not found');
+            throw new AppError('document not found');
         }
 
         if(documentExists.closed_at !== null) {
-            throw new Error('document is closed');
+            throw new AppError('document is closed');
         }
 
         if(documentExists.deleted_at !== null) {
-            throw new Error('document deleted');
+            throw new AppError('document deleted');
         }
 
         if(!['in','out'].includes(documentExists.type)) {
-            throw new Error('please, send in or out in type of document');
+            throw new AppError('please, send in or out in type of document');
         }
     }
 }

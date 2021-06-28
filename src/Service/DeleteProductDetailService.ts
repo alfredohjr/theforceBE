@@ -2,6 +2,8 @@ import { getRepository } from 'typeorm';
 import ProductDetail from '../models/ProductDetail';
 import ProductLog from '../models/ProductLog';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
     user_id: string;
@@ -21,7 +23,7 @@ class DeleteProductDetailService {
         });
 
         if(!productdetailExists) {
-            throw new Error('productdetail not found');
+            throw new AppError('productdetail not found');
         }
 
         await productdetailRepository.update(productdetailExists.id,{

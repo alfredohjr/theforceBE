@@ -3,6 +3,8 @@ import Document from '../models/Document';
 import DocumentProduct from '../models/DocumentProduct';
 import CreateDocumentLogService from './CreateDocumentLogService';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
     user_id: string;
@@ -21,7 +23,7 @@ class DeleteDocumentProductService {
         });
 
         if(!documentproductExists) {
-            throw new Error('document product not found');
+            throw new AppError('document product not found');
         }
 
         const documentRepository = getRepository(Document);
@@ -33,7 +35,7 @@ class DeleteDocumentProductService {
         });
 
         if(documentRepository) {
-            throw new Error('Document is closed, delete is not possible');
+            throw new AppError('Document is closed, delete is not possible');
         }
 
         await documentproductRepository.update(documentproductExists.id,{

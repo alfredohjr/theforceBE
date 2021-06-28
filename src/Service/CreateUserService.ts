@@ -4,6 +4,8 @@ import bcrypt from 'bcrypt';
 import User from '../models/User';
 import Queue from '../lib/Queue';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     name: string;
     email: string;
@@ -14,11 +16,11 @@ class CreateUserService {
     public async execute({ name, email, password}: Request): Promise<User> {
 
         if(name.length < 10) {
-            throw new Error('minumum size of name is 10');
+            throw new AppError('minumum size of name is 10');
         }
 
         if(!(name || email || password)) {
-            throw new Error('Please! send name, email and password!');
+            throw new AppError('Please! send name, email and password!');
         }
 
         const usersRepository = getRepository(User);
@@ -30,7 +32,7 @@ class CreateUserService {
         });
 
         if(checkUserExists){
-            throw new Error('Email already used!');
+            throw new AppError('Email already used!');
         }
 
         const salt = await bcrypt.genSalt(8);

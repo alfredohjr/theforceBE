@@ -7,7 +7,7 @@ import GetProductPriceService from "../Service/GetProductPriceService";
 
 const priceRouter = Router();
 
-priceRouter.get('/', async (request, response) => {
+priceRouter.get('/', async (request, response, next) => {
     try {
         const {id} = request.body;
         const getPrices = new GetProductPriceService();
@@ -16,11 +16,11 @@ priceRouter.get('/', async (request, response) => {
 
         return response.status(200).json(prices);
     } catch (err) {
-        return response.status(400).json({ error: err.message });
+        next(err);
     }
 });
 
-priceRouter.post('/', async (request, response) => {
+priceRouter.post('/', async (request, response, next) => {
     try {
         const {
             product_id,            
@@ -44,7 +44,7 @@ priceRouter.post('/', async (request, response) => {
 
         return response.status(200).json(prices);
     } catch (err) {
-        return response.status(400).json({ error: err.message });
+        next(err);
     }
 });
 

@@ -1,6 +1,8 @@
 import { getRepository } from 'typeorm';
 import EntityLog from '../models/EntityLog';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
 };
@@ -16,7 +18,7 @@ class IsValidEntityLogService {
         });
 
         if(!entitylogExists) {
-            throw new Error('entitylog not found');
+            throw new AppError('entitylog not found');
         }
     }
 }

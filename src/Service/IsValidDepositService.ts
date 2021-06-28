@@ -1,6 +1,8 @@
 import { getRepository } from "typeorm";
 import Deposit from "../models/Deposit";
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
 }
@@ -16,11 +18,11 @@ class IsValidDepositService {
         });
 
         if(!depositExists) {
-            throw new Error('deposit not found');
+            throw new AppError('deposit not found');
         }
 
         if(depositExists.deleted_at !== null) {
-            throw new Error('deposit inactive, please contact administrator for more information');
+            throw new AppError('deposit inactive, please contact administrator for more information');
         }
     }
 }

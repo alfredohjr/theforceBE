@@ -1,6 +1,8 @@
 import { getRepository } from "typeorm";
 import Stock from "../models/Stock";
 
+import AppError from '../errors/AppError';
+
 interface Request {
     user_id: string;
     deposit_id: string;
@@ -15,7 +17,7 @@ class RegisterStockService {
         const stockRepository = getRepository(Stock);
 
         if(value < 0) {
-            throw new Error('negative value not allowed');
+            throw new AppError('negative value not allowed');
         }
 
         const stockExists = await stockRepository.findOne({
@@ -31,7 +33,7 @@ class RegisterStockService {
         } else if(type === 'in') {
             newAmount = amount * 1;
         } else {
-            throw new Error('please, send in or out in type of movement');
+            throw new AppError('please, send in or out in type of movement');
         }
 
         if(stockExists) {

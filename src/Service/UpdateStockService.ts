@@ -2,6 +2,8 @@ import { getRepository } from 'typeorm';
 import Stock from '../models/Stock';
 import CreateStockLogService from './CreateStockLogService';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
     user_id: string;
@@ -14,13 +16,13 @@ class UpdateStockService {
         const stockRepository = getRepository(Stock);
 
         if(value < 0) {
-            throw new Error('negative value not allowed');
+            throw new AppError('negative value not allowed');
         }
 
         const stockExists = await stockRepository.findOne(id);
 
         if(!stockExists) {
-            throw new Error('stock not found');
+            throw new AppError('stock not found');
         }
 
         await stockRepository.update(stockExists.id,{

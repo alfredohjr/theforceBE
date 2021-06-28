@@ -1,6 +1,8 @@
 import { getRepository } from 'typeorm';
 import ProductDetail from '../models/ProductDetail';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
 };
@@ -16,11 +18,11 @@ class IsValidProductDetailService {
         });
 
         if(!productdetailExists) {
-            throw new Error('productdetail not found');
+            throw new AppError('productdetail not found');
         }
 
         if(productdetailExists.deleted_at !== null) {
-            throw new Error('productdetail deleted');
+            throw new AppError('productdetail deleted');
         }
 
     }

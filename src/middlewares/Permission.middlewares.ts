@@ -31,7 +31,7 @@ async function PermissionUser(request: express.Request, response: express.Respon
         });
 
         if(!permissionExists) {
-            throw new Error('permission not found');
+            throw new AppError('permission not found');
         };
 
         const userPermissionRepository = getRepository(UserPermission);
@@ -44,15 +44,15 @@ async function PermissionUser(request: express.Request, response: express.Respon
         });
 
         if(!userPermissionExists) {
-            throw new Error('operation not allowed for this user');
+            throw new AppError('operation not allowed for this user');
         }
 
         if(userPermissionExists.active === false) {
-            throw new Error('operation not active for this user');
+            throw new AppError('operation not active for this user');
         }
 
         if(userPermissionExists.enabled === false) {
-            throw new Error('operation not enable for this user');
+            throw new AppError('operation not enable for this user');
         }
 
     } catch (err) {

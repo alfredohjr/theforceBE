@@ -2,6 +2,8 @@ import { getConnection, getRepository, LessThanOrEqual, MoreThanOrEqual } from "
 import Product from "../models/Product";
 import ProductPrice from "../models/ProductPrice";
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id?: string;
 }
@@ -24,7 +26,7 @@ class GetProductPriceService {
             });
 
             if(!price) {
-                throw new Error('product not found');
+                throw new AppError('product not found');
             }
             
             return price;

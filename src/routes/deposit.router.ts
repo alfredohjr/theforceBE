@@ -8,7 +8,7 @@ import IsValidDepositService from '../Service/IsValidDepositService';
 
 const depositRouter = Router();
 
-depositRouter.post('/', async (request, response) => {
+depositRouter.post('/', async (request, response, next) => {
     try {
         
         const { name } = request.body;
@@ -19,11 +19,11 @@ depositRouter.post('/', async (request, response) => {
 
         return response.status(200).json(deposit);
     } catch (err) {
-        return response.status(400).json({error: err.message});
+        next(err);
     }
 });
 
-depositRouter.get('/', async (request, response) => {
+depositRouter.get('/', async (request, response, next) => {
     try {
         
         const getDeposit = new GetDepositService();
@@ -31,11 +31,11 @@ depositRouter.get('/', async (request, response) => {
 
         return response.status(200).json(deposits);
     } catch (err) {
-        return response.status(400).json({error: err.message});
+        next(err);
     }
 });
 
-depositRouter.put('/', async (request, response) => {
+depositRouter.put('/', async (request, response, next) => {
     try {
         
         const { id, name } = request.body;
@@ -49,11 +49,11 @@ depositRouter.put('/', async (request, response) => {
 
         return response.status(200).json(deposit);
     } catch (err) {
-        return response.status(400).json({error: err.message});
+        next(err);
     }
 });
 
-depositRouter.delete('/', async (request, response) => {
+depositRouter.delete('/', async (request, response, next) => {
     try {
 
         const { id } = request.body;
@@ -67,7 +67,7 @@ depositRouter.delete('/', async (request, response) => {
 
         return response.status(200).json({message: 'success'});
     } catch (err) {
-        return response.status(400).json({error: err.message})
+        next(err);
     }
 });
 

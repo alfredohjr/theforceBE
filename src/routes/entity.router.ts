@@ -14,7 +14,7 @@ const entityRouter = Router();
 
 const upload = multer(uploadConfig);
 
-entityRouter.post('/', async(request, response) => {
+entityRouter.post('/', async(request, response, next) => {
     try {
 
         const { name, type } = request.body;
@@ -30,11 +30,11 @@ entityRouter.post('/', async(request, response) => {
         return response.status(200).json(entity);
 
     } catch (err) {
-        response.status(400).json({ error: err.message})
+        next(err);
     }
 });
 
-entityRouter.get('/', async (request, response) => {
+entityRouter.get('/', async (request, response, next) => {
     try {
         
         const getEntity = new GetEntityService();
@@ -81,7 +81,7 @@ entityRouter.delete('/', async(request, response) => {
 entityRouter.patch(
     '/avatar/:entity_id',
     upload.single('avatar'),
-    async (request, response) => {
+    async (request, response, next) => {
         try {
             const user_id = request.user.id;
             const avatar = request.file?.filename;
@@ -93,13 +93,13 @@ entityRouter.patch(
 
             return response.status(200).json({ message: 'success'});            
         } catch (err) {
-            return response.status(400).json({ error: err.message });
+            next(err);
         }
 });
 
 entityRouter.delete(
     '/avatar',
-    async (request, response) => {
+    async (request, response, next) => {
         try {
             const user_id = request.user.id;
             const { id } = request.body;
@@ -110,7 +110,7 @@ entityRouter.delete(
 
             return response.status(200).json({ message: 'success'});            
         } catch (err) {
-            return response.status(400).json({ error: err.message });
+            next(err);
         }
 });
 

@@ -7,6 +7,8 @@ import ProductPrice from "../models/ProductPrice";
 import Stock from "../models/Stock";
 import CreateProductLogService from "./CreateProductLogService";
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
     user_id: string;
@@ -21,7 +23,7 @@ class DeleteProductService {
         const productExists = await productRepository.findOne(id);
 
         if(!productExists) {
-            throw new Error('product not found');
+            throw new AppError('product not found');
         }
 
         const stockIsDifferentOf0 = await stockRepository.findOne({
@@ -32,7 +34,7 @@ class DeleteProductService {
         })
 
         if(stockIsDifferentOf0) {
-            throw new Error('find product stock, delete abort');
+            throw new AppError('find product stock, delete abort');
         }
 
         const isOpenDocument1 = getRepository(Document)
@@ -50,7 +52,7 @@ class DeleteProductService {
             .getMany();
 
         if(isOpenDocument.length !== 0) {
-            throw new Error('find open document for this product, delete abort');
+            throw new AppError('find open document for this product, delete abort');
         }
 
         await productRepository.update(productExists.id,{

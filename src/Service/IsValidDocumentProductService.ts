@@ -1,6 +1,8 @@
 import { getRepository } from 'typeorm';
 import DocumentProduct from '../models/DocumentProduct';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
 };
@@ -16,11 +18,11 @@ class IsValidDocumentProductService {
         });
 
         if(!documentproductExists) {
-            throw new Error('document product not found');
+            throw new AppError('document product not found');
         }
 
         if(documentproductExists.deleted_at !== null) {
-            throw new Error('document product deleted');
+            throw new AppError('document product deleted');
         }
 
     }

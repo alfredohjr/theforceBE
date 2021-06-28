@@ -2,6 +2,7 @@ import { getRepository } from 'typeorm';
 import jwt from 'jsonwebtoken';
 
 import Token from '../models/Token';
+import AppError from '../errors/AppError';
 
 interface Request {
     token?: string;
@@ -12,13 +13,13 @@ class AuthLogoutService {
     public async execute({ token, user_id }: Request): Promise<void> {
 
         if(!token) {
-            throw new Error('please, send token')
+            throw new AppError('please, send token')
         }
 
         const isValidToken = jwt.verify(token,'ONovoSiteSemSentido');
 
         if(!isValidToken) {
-            throw new Error('invalid token');
+            throw new AppError('invalid token');
         }
         
         const tokenRepository = getRepository(Token);

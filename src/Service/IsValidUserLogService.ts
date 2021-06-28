@@ -1,6 +1,8 @@
 import { getRepository } from 'typeorm';
 import UserLog from '../models/UserLog';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
 };
@@ -16,7 +18,7 @@ class IsValidUserLogService {
         });
 
         if(!userlogExists) {
-            throw new Error('userlog not found');
+            throw new AppError('userlog not found');
         }
 
     }

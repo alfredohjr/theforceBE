@@ -2,6 +2,8 @@ import { request } from "express";
 import { getRepository } from "typeorm";
 import Document from "../models/Document";
 
+import AppError from '../errors/AppError';
+
 interface Request {
     key: string,
     entity_id: string;
@@ -23,11 +25,11 @@ class CreateDocumentService {
         });
 
         if(documentExists) {
-            throw new Error('document already exists');
+            throw new AppError('document already exists');
         }
 
         if(!['in','out'].includes(type)) {
-            throw new Error('please, send in or out in type of document');
+            throw new AppError('please, send in or out in type of document');
         }
 
         const document = documentRepository.create({

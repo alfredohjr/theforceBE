@@ -1,6 +1,8 @@
 import { getRepository } from 'typeorm';
 import DepositLog from '../models/DepositLog';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
 };
@@ -16,7 +18,7 @@ class IsValidDepositLogService {
         });
 
         if(!depositlogExists) {
-            throw new Error('depositlog not found');
+            throw new AppError('depositlog not found');
         }
         
     }

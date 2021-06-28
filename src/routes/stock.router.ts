@@ -7,7 +7,7 @@ const stockRouter = Router();
 
 stockRouter.use('/movement', stockmovementRouter);
 
-stockRouter.get('/', async (request, response) => {
+stockRouter.get('/', async (request, response, next) => {
     try {
 
         const { product_id } = request.body;

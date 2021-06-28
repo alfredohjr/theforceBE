@@ -1,6 +1,8 @@
 import { getRepository } from 'typeorm';
 import Permission from '../models/Permission';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
 };
@@ -16,11 +18,11 @@ class IsValidPermissionService {
         });
 
         if(!permissionExists) {
-            throw new Error('permission not found');
+            throw new AppError('permission not found');
         }
 
         if(permissionExists.deleted_at !== null) {
-            throw new Error('permission deleted');
+            throw new AppError('permission deleted');
         }
 
     }

@@ -1,6 +1,8 @@
 import { getRepository } from 'typeorm';
 import StockLog from '../models/StockLog';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
 };
@@ -16,7 +18,7 @@ class IsValidStockLogService {
         });
 
         if(!stocklogExists) {
-            throw new Error('stocklog not found');
+            throw new AppError('stocklog not found');
         }
 
     }

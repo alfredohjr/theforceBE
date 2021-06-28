@@ -2,6 +2,8 @@ import { getRepository } from 'typeorm';
 import UserPermission from '../models/UserPermission';
 import CreateUserLogService from './CreateUserLogService';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
     user_id: string;
@@ -15,11 +17,11 @@ class UpdateUserPermissionService {
         const userpermissionExists = await userpermissionRepository.findOne(id);
 
         if(!userpermissionExists) {
-            throw new Error('userpermission not found');
+            throw new AppError('userpermission not found');
         }
 
         if(!(permission_id)) {
-            throw new Error('please, send permission for update');
+            throw new AppError('please, send permission for update');
         }
 
         await userpermissionRepository.update(userpermissionExists.id,{

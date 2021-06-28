@@ -4,6 +4,8 @@ import { getRepository } from 'typeorm';
 import UserPermission from '../models/UserPermission';
 import UserPermissionLog from '../models/UserPermissionLog';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
     user_id: string;
@@ -23,7 +25,7 @@ class DeleteUserPermissionService {
         });
 
         if(!userpermissionExists) {
-            throw new Error('userpermission not found');
+            throw new AppError('userpermission not found');
         }
 
         await userpermissionRepository.update(userpermissionExists.id,{

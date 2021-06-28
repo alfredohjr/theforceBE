@@ -5,6 +5,8 @@ import { resolve } from 'path';
 import exphbs from 'express-handlebars';
 import nodemailerhbs from 'nodemailer-express-handlebars';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     to: string;
     subject: string;
@@ -15,7 +17,7 @@ interface Request {
 class SendEmailService {
     public async execute({to, subject, template, context}: Request): Promise<void> {
 
-        throw new Error('service is old, please see email lib to send messages')
+        throw new AppError('service is old, please see email lib to send messages')
 
         const mailOptions = {
             from: 'alfredo@test.com.br',

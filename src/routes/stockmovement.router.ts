@@ -4,7 +4,7 @@ import GetStockMovementService from '../Service/GetStockMovementService';
 
 const stockmovementRouter = Router();
 
-stockmovementRouter.get('/', async (request, response) => {
+stockmovementRouter.get('/', async (request, response, next) => {
     try {
 
         const { deposit_id, product_id } = request.body;

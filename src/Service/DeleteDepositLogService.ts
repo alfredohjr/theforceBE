@@ -1,3 +1,5 @@
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
 };
@@ -5,7 +7,7 @@ interface Request {
 class DeleteDepositLogService {
     public async execute({id}: Request): Promise<void> {
 
-        throw new Error('for delete deposit logs, contact administrator')
+        throw new AppError('for delete deposit logs, contact administrator')
 
     }
 }

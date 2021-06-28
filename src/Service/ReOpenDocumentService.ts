@@ -7,6 +7,8 @@ import CreateDocumentLogService from "./CreateDocumentLogService";
 import IsValidDepositService from "./IsValidDepositService";
 import IsValidEntityService from "./IsValidEntityService";
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
     user_id: string;
@@ -25,7 +27,7 @@ class ReOpenDocumentService {
         });
 
         if(!document){
-            throw new Error('document not found');
+            throw new AppError('document not found');
         }
 
         const isValidDeposit = new IsValidDepositService();
@@ -66,7 +68,7 @@ class ReOpenDocumentService {
             } else if (document.type === "out") {
                 tmpAmount = p.amount
             } else {
-                throw new Error("document type is not valid");
+                throw new AppError("document type is not valid");
             }
 
             const stockExists = await stock.findOne({

@@ -1,7 +1,8 @@
+import AppError from '../errors/AppError';
 
 class UpdatePermissionService {
     public async execute(): Promise<void> {
-        throw new Error('is not possible to update permission, please create a new permission');
+        throw new AppError('is not possible to update permission, please create a new permission');
     }
 }
 

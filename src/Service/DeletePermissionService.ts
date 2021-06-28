@@ -4,6 +4,8 @@ import { getRepository } from 'typeorm';
 import Permission from '../models/Permission';
 import PermissionLog from '../models/PermissionLog';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
     user_id: string;
@@ -23,7 +25,7 @@ class DeletePermissionService {
         });
 
         if(!permissionExists) {
-            throw new Error('permission not found');
+            throw new AppError('permission not found');
         }
 
         await permissionRepository.update(permissionExists.id,{

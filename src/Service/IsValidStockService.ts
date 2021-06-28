@@ -1,6 +1,8 @@
 import { getRepository } from 'typeorm';
 import Stock from '../models/Stock';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
 };
@@ -16,11 +18,11 @@ class IsValidStockService {
         });
 
         if(!stockExists) {
-            throw new Error('stock not found');
+            throw new AppError('stock not found');
         }
 
         if(stockExists.deleted_at !== null) {
-            throw new Error('stock deleted');
+            throw new AppError('stock deleted');
         }
 
     }

@@ -2,6 +2,8 @@ import { getRepository } from 'typeorm';
 import { isBefore, isAfter } from 'date-fns';
 import ProductPrice from '../models/ProductPrice';
 
+import AppError from '../errors/AppError';
+
 interface Request{
     user_id: string;
     product_id: string;
@@ -25,15 +27,15 @@ class CreateProductPriceService {
         const productpriceRepository = getRepository(ProductPrice);
 
         if(isAfter(finished_at,started_at)){
-            throw new Error('start is after finished');
+            throw new AppError('start is after finished');
         }
 
         if(isBefore(new Date(),started_at)) {
-            throw new Error('start is before now');
+            throw new AppError('start is before now');
         }
 
         if(price < 0) {
-            throw new Error('negative price not allowed');
+            throw new AppError('negative price not allowed');
         }
         
         const productprice = productpriceRepository.create({

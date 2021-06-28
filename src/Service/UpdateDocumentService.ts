@@ -2,6 +2,8 @@ import { getRepository } from 'typeorm';
 import Document from '../models/Document';
 import CreateDocumentLogService from './CreateDocumentLogService';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
     user_id: string;
@@ -15,7 +17,7 @@ class UpdateDocumentService {
         const documentExists = await documentRepository.findOne(id);
 
         if(!documentExists) {
-            throw new Error('document not found');
+            throw new AppError('document not found');
         }
 
         await documentRepository.update(documentExists.id,{

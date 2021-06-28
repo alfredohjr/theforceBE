@@ -4,6 +4,8 @@ import Document from "../models/Document";
 import Stock from "../models/Stock";
 import CreateDepositLogService from "./CreateDepositLogService";
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
     user_id: string;
@@ -24,7 +26,7 @@ class DeleteDepositService {
         });
 
         if(!depositExists) {
-            throw new Error('deposit not found');
+            throw new AppError('deposit not found');
         }
 
         const stockIsDifferentOf0 = await stockRepository.findOne({
@@ -35,7 +37,7 @@ class DeleteDepositService {
         });
 
         if(stockIsDifferentOf0) {
-            throw new Error('find movement stock in deposit, delete abort');
+            throw new AppError('find movement stock in deposit, delete abort');
         }
 
         const isOpenDocument = await documentRepository.findOne({
@@ -47,7 +49,7 @@ class DeleteDepositService {
         });
 
         if(isOpenDocument) {
-            throw new Error('find open document for this deposit, delete abort');
+            throw new AppError('find open document for this deposit, delete abort');
         }
 
         await depositRepository.update(depositExists.id,{

@@ -4,6 +4,8 @@ import Entity from '../models/Entity';
 import EntityLog from '../models/EntityLog';
 import CreateEntityLogService from './CreateEntityLogService';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
     user_id: string;
@@ -23,7 +25,7 @@ class DeleteEntityService {
         });
 
         if(!entityExists) {
-            throw new Error('entity not found');
+            throw new AppError('entity not found');
         }
 
         const isOpenDocument = await documentRepository.findOne({
@@ -35,7 +37,7 @@ class DeleteEntityService {
         })
 
         if(isOpenDocument) {
-            throw new Error('find open document for this entity, delete abort');
+            throw new AppError('find open document for this entity, delete abort');
         }
 
         await entityRepository.update(entityExists.id,{

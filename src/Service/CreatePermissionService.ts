@@ -1,6 +1,8 @@
 import { getRepository } from 'typeorm';
 import Permission from '../models/Permission';
 
+import AppError from '../errors/AppError';
+
 interface Request{
     name: string;
     method: string;
@@ -21,7 +23,7 @@ class CreatePermissionService {
         });
 
         if(permissionExists) {
-            throw new Error('permission already exists');
+            throw new AppError('permission already exists');
         };
 
         const permission = permissionRepository.create({

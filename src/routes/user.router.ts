@@ -16,7 +16,7 @@ const upload = multer(uploadConfig);
 
 const usersRouter = Router();
 
-usersRouter.post('/', async (request, response) => {
+usersRouter.post('/', async (request, response, next) => {
     try {
         const { name, email, password } = request.body;
 
@@ -31,7 +31,7 @@ usersRouter.post('/', async (request, response) => {
         return response.status(200).json({name, email});
 
     } catch (err) {
-        return response.status(400).json({ error: err.message});
+        next(err);
     }
 })
 
@@ -40,7 +40,7 @@ usersRouter.use(AuthUser);
 usersRouter.patch(
     '/avatar',
     upload.single('avatar'),
-    async (request, response) => {
+    async (request, response, next) => {
         try {
             const user_id = request.user.id;
             const avatar = request.file?.filename;
@@ -51,13 +51,13 @@ usersRouter.patch(
 
             return response.status(200).json({ message: 'success'});            
         } catch (err) {
-            return response.status(400).json({ error: err.message });
+            next(err);
         }
 });
 
 usersRouter.delete(
     '/avatar',
-    async (request, response) => {
+    async (request, response, next) => {
         try {
             const user_id = request.user.id;
 
@@ -67,13 +67,13 @@ usersRouter.delete(
 
             return response.status(200).json({ message: 'success'});            
         } catch (err) {
-            return response.status(400).json({ error: err.message });
+            next(err);
         }
 });
 
 usersRouter.use(IsValidUserPassword);
 
-usersRouter.delete('/', async (request, response) => {
+usersRouter.delete('/', async (request, response, next) => {
     try {
         const { email } = request.body;
         const token = request.headers.authorization?.split(' ')[1];
@@ -88,11 +88,11 @@ usersRouter.delete('/', async (request, response) => {
         return response.status(200).json({message: 'user deleted'})
 
     } catch (err) {
-        return response.status(400).json({ error: err.message});
+        next(err);
     }
 });
 
-usersRouter.put('/', async (request, response) => {
+usersRouter.put('/', async (request, response, next) => {
     try {
         const { name, email, password, newPassword } = request.body;
 
@@ -107,7 +107,7 @@ usersRouter.put('/', async (request, response) => {
 
         return response.status(200).json({name: user?.name, email: user?.email});
     } catch (err) {
-        return response.status(400).json({ error: err.message });
+        next(err);
     }
 });
 

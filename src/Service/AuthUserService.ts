@@ -2,6 +2,7 @@ import { getRepository } from 'typeorm';
 import jwt from 'jsonwebtoken';
 
 import Token from '../models/Token';
+import AppError from '../errors/AppError';
 
 interface Request {
     token?: string;
@@ -16,13 +17,13 @@ class AuthUserService {
     public async execute({ token } : Request) : Promise<Response> {
 
         if(!token) {
-            throw new Error('please, send valid token');
+            throw new AppError('please, send valid token');
         }
 
         const isValidToken = jwt.verify(token,process.env.SECRET);
 
         if(!isValidToken) {
-            throw new Error('invalid token');
+            throw new AppError('invalid token');
         }
 
         const tokenRepository = getRepository(Token);
@@ -35,7 +36,7 @@ class AuthUserService {
         });
 
         if(tokenInBlackList) {
-            throw new Error('invalid token')
+            throw new AppError('invalid token')
         }
         
         return {

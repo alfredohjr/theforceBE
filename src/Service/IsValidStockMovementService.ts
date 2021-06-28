@@ -1,6 +1,8 @@
 import { getRepository } from 'typeorm';
 import StockMovement from '../models/StockMovement';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
 };
@@ -16,11 +18,11 @@ class IsValidStockMovementService {
         });
 
         if(!stockmovementExists) {
-            throw new Error('stock movement not found');
+            throw new AppError('stock movement not found');
         }
 
         if(stockmovementExists.deleted_at !== null) {
-            throw new Error('stock movement deleted');
+            throw new AppError('stock movement deleted');
         }
 
     }

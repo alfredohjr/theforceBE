@@ -6,7 +6,7 @@ import AuthLogoutService from '../Service/AuthLogoutService';
 const logoutRouter = Router();
 
 logoutRouter.use(AuthUser);
-logoutRouter.post('/', async (request, response) => {
+logoutRouter.post('/', async (request, response, next) => {
 
     try {
         const token = request.headers.authorization?.split(' ')[1];
@@ -21,7 +21,7 @@ logoutRouter.post('/', async (request, response) => {
 
         return response.status(200).json({message: 'success'});
     } catch (err) {
-        return response.status(400).json({ error: err.message });
+        next(err);
     }
 });
 

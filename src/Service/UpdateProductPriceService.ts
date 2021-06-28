@@ -2,6 +2,8 @@ import { getRepository } from 'typeorm';
 import ProductPrice from '../models/ProductPrice';
 import CreateProductLogService from './CreateProductLogService';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
     user_id: string;
@@ -13,13 +15,13 @@ class UpdateProductPriceService {
         const productpriceRepository = getRepository(ProductPrice);
 
         if(price < 0) {
-            throw new Error('negative value not allowed');
+            throw new AppError('negative value not allowed');
         }
 
         const productpriceExists = await productpriceRepository.findOne(id);
 
         if(!productpriceExists) {
-            throw new Error('productprice not found');
+            throw new AppError('productprice not found');
         }
 
         await productpriceRepository.update(productpriceExists.id,{

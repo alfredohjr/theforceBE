@@ -1,6 +1,8 @@
 import { getRepository } from 'typeorm';
 import ProductPrice from '../models/ProductPrice';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
 };
@@ -16,11 +18,11 @@ class IsValidProductPriceService {
         });
 
         if(!productpriceExists) {
-            throw new Error('productprice not found');
+            throw new AppError('productprice not found');
         }
 
         if(productpriceExists.deleted_at !== null) {
-            throw new Error('productprice deleted');
+            throw new AppError('productprice deleted');
         }
 
     }

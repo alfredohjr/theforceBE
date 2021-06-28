@@ -6,7 +6,7 @@ import IsValidProductService from '../Service/IsValidProductService';
 
 const documentProductRouter = Router();
 
-documentProductRouter.get('/:document_id', async(request, response) => {
+documentProductRouter.get('/:document_id', async(request, response, next) => {
     try {
         const { document_id } = request.params;
 
@@ -15,11 +15,11 @@ documentProductRouter.get('/:document_id', async(request, response) => {
 
         return response.status(200).json(documentProducts);
     } catch (err) {
-        return response.status(400).json({ error: err.message });
+        next(err);
     }
 });
 
-documentProductRouter.post('/', async(request, response) => {
+documentProductRouter.post('/', async(request, response, next) => {
     try {
 
         const { document_id, product_id, value, amount } = request.body;
@@ -42,23 +42,23 @@ documentProductRouter.post('/', async(request, response) => {
 
         return response.status(500).json(documentProduct);
     } catch (err) {
-        return response.status(400).json({ error: err.message});
+        next(err);
     }
 });
 
-documentProductRouter.put('/', async(request, response) => {
+documentProductRouter.put('/', async(request, response, next) => {
     try {
         return response.status(500).json({ message: `${request.method} is empty`});
     } catch (err) {
-        return response.status(400).json({ error: err.message});
+        next(err);
     }
 });
 
-documentProductRouter.delete('/', async(request, response) => {
+documentProductRouter.delete('/', async(request, response, next) => {
     try {
         return response.status(500).json({ message: `${request.method} is empty`});
     } catch (err) {
-        return response.status(400).json({ error: err.message});
+        next(err);
     }
 });
 

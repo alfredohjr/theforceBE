@@ -1,6 +1,8 @@
 import { getRepository } from "typeorm";
 import Product from "../models/Product";
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
 }
@@ -12,11 +14,11 @@ class IsValidProductService {
         const productExists = await productRepository.findOne(id);
 
         if(!productExists) {
-            throw new Error('product not found')
+            throw new AppError('product not found')
         }
 
         if(productExists.deleted_at) {
-            throw new Error('product is inactive')
+            throw new AppError('product is inactive')
         }
 
     }

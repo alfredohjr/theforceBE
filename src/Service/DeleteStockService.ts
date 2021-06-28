@@ -3,6 +3,8 @@ import Stock from '../models/Stock';
 import StockLog from '../models/StockLog';
 import CreateStockLogService from './CreateStockLogService';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
     user_id: string;
@@ -21,11 +23,11 @@ class DeleteStockService {
         });
 
         if(!stockExists) {
-            throw new Error('stock not found');
+            throw new AppError('stock not found');
         }
 
         if(stockExists.value !== 0) {
-            throw new Error(`stock value of ${id} is ${stockExists.value}, is not possible to delete it.`);
+            throw new AppError(`stock value of ${id} is ${stockExists.value}, is not possible to delete it.`);
         }
 
         await stockRepository.update(stockExists.id,{

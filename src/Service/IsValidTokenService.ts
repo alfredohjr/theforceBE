@@ -1,6 +1,8 @@
 import { getRepository } from 'typeorm';
 import Token from '../models/Token';
 
+import AppError from '../errors/AppError';
+
 interface Request {
     id: string;
 };
@@ -17,7 +19,7 @@ class IsValidTokenService {
         });
 
         if(!tokenExists) {
-            throw new Error('token not found');
+            throw new AppError('token not found');
         }
 
     }

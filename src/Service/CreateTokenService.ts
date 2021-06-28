@@ -1,6 +1,8 @@
 import { getRepository } from 'typeorm';
 import Token from '../models/Token';
 
+import AppError from '../errors/AppError';
+
 interface Request{
     hash: string;
     user_id: string;
@@ -18,7 +20,7 @@ class CreateTokenService {
         });
 
         if(tokenExists) {
-            throw new Error('token for user already exists');
+            throw new AppError('token for user already exists');
         };
 
         const token = tokenRepository.create({

@@ -1,6 +1,8 @@
 import { getRepository } from "typeorm";
 import DocumentProduct from "../models/DocumentProduct";
 
+import AppError from '../errors/AppError';
+
 interface Request {
     user_id: string; 
     document_id: string; 
@@ -14,11 +16,11 @@ class CreateDocumentProductService {
         const documentProductRepository = getRepository(DocumentProduct);
 
         if(value < 0) {
-            throw new Error('negative value not allowed');
+            throw new AppError('negative value not allowed');
         }
 
         if(amount < 0) {
-            throw new Error('negative amount not allowed');
+            throw new AppError('negative amount not allowed');
         }
 
         const docProdExists = await documentProductRepository.findOne({
@@ -30,7 +32,7 @@ class CreateDocumentProductService {
         });
 
         if(docProdExists) {
-            throw new Error('product already exists in the document');
+            throw new AppError('product already exists in the document');
         }
 
         const docProduct = documentProductRepository.create({
