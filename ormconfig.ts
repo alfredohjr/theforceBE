@@ -6,7 +6,7 @@ export = {
     password : process.env.DB_PASSWORD,
     database : process.env.DB_DATABASE,
     entities : [
-        "./src/models/*.ts"
+        "./src/*/Models/*.ts"
     ],
     migrations: [
         "./src/database/migrations/*.ts"
